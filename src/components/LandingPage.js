@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function LandingPage() {
   const navigate = useNavigate();
 
+  useEffect(() => {
+    // ✅ Reset the timer on landing
+    localStorage.removeItem("experimentStart");
+  }, []);
+
   const handleGroupSelect = (group) => {
-    localStorage.setItem("group", group); // Save group for later
+    localStorage.setItem("group", group);
+    localStorage.setItem("experimentStart", Date.now());
     navigate("/task1-instructions");
   };
 
@@ -13,8 +19,8 @@ function LandingPage() {
     <div className="container">
       <h1>The Psychology of Notifications</h1>
       <p>
-        Welcome! In this experiment, you will complete several simple tasks. Based on your assigned group,
-        you will receive notifications at different intervals.
+        Welcome! In this experiment, you will complete several simple tasks.
+        Based on your assigned group, you will receive notifications at different intervals.
       </p>
       <p className="warning">
         ⚠️ Once you choose your group, the timer for the experiment will begin!
