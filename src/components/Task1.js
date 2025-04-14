@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from "react";
+
 import "../styles/Task1.css";
 import { useNavigate } from "react-router-dom"; // Make sure this is at the top
+import React, { useEffect, useState, useRef } from "react";
 
 
 const levelPatterns = {
@@ -186,7 +187,16 @@ const levelPatterns = {
     const [incorrectCells, setIncorrectCells] = useState([]);
     const [missedCells, setMissedCells] = useState([]);
     const [levelCompleted, setLevelCompleted] = useState(false);
-    
+  
+    const [taskStartTime, setTaskStartTime] = useState(null);
+    const [taskElapsedTime, setTaskElapsedTime] = useState(0);
+    const intervalRef = useRef(null);
+  
+    // ✅ New: Tracking accuracy across all levels
+    const [totalCorrectGuesses, setTotalCorrectGuesses] = useState(0);
+    const [totalRequiredPatternCells, setTotalRequiredPatternCells] = useState(0);
+  
+    const navigate = useNavigate();
   
     const level = levelPatterns[currentLevel]; // may be undefined
     const pattern = level?.pattern || [];
@@ -195,7 +205,24 @@ const levelPatterns = {
     const totalPatternCells = pattern.length;
     const totalAllowedClicks = totalPatternCells + allowedErrors;
   
-    // ✅ Hook must not be conditional — so we always call it, but handle nulls inside
+    const formatTime = (ms) => {
+      const totalSeconds = Math.floor(ms / 1000);
+      const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
+      const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+      return `${minutes}:${seconds}`;
+    };
+  
+    useEffect(() => {
+      const start = Date.now();
+      setTaskStartTime(start);
+  
+      intervalRef.current = setInterval(() => {
+        setTaskElapsedTime(Date.now() - start);
+      }, 1000);
+  
+      return () => clearInterval(intervalRef.current);
+    }, []);
+  
     useEffect(() => {
       if (!level) return;
   
@@ -206,19 +233,42 @@ const levelPatterns = {
       return () => clearTimeout(timer);
     }, [currentLevel, level, totalAllowedClicks]);
   
-    // ✅ Now we can check for missing level safely AFTER all hooks
-    const navigate = useNavigate();
-
+    // 🎯 FINAL LEVEL COMPLETE — SHOW SUMMARY + STOP TIMER
     if (!level) {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    
+      const formattedTime = formatTime(taskElapsedTime);
+      const accuracyPercent = ((totalCorrectGuesses / totalRequiredPatternCells) * 100).toFixed(1);
+    
+      // ✅ Save task results to localStorage
+      localStorage.setItem(
+        "task1Results",
+        JSON.stringify({
+          time: formattedTime,
+          correct: totalCorrectGuesses,
+          total: totalRequiredPatternCells,
+          accuracy: accuracyPercent
+        })
+      );
+    
       return (
         <div className="task1-container">
           <h2>🎉 Task 1 Complete!</h2>
           <p>You've completed all the levels in the Pattern Matching task.</p>
           <p>Well done! You can now proceed to the next task.</p>
-          <button onClick={() => navigate("/summary")}>Go to Summary</button> {/* ✅ */}
+          <p>Total Task Time: {formattedTime}</p>
+          <p>
+            You guessed {totalCorrectGuesses} out of {totalRequiredPatternCells} pattern cells correctly.<br />
+            Your accuracy was: <strong>{accuracyPercent}%</strong>
+          </p>
+          <button onClick={() => navigate("/summary")}>Go to Summary</button>
         </div>
       );
     }
+    
   
     const handleCellClick = (row, col) => {
       if (showPattern || submitted || clicksLeft <= 0) return;
@@ -259,13 +309,13 @@ const levelPatterns = {
       setMissedCells(missed);
       setSubmitted(true);
       setLevelCompleted(true);
-    };
   
-    const isCellInPattern = (r, c) => pattern.some(([pr, pc]) => pr === r && pc === c);
-    const isCellClicked = (r, c) => userGrid.some(([ur, uc]) => ur === r && uc === c);
-    const isCellCorrect = (r, c) => correctCells.some(([cr, cc]) => cr === r && cc === c);
-    const isCellIncorrect = (r, c) => incorrectCells.some(([ir, ic]) => ir === r && ic === c);
-    const isCellMissed = (r, c) => missedCells.some(([mr, mc]) => mr === r && mc === c);
+      // ✅ Update total stats
+      setTotalCorrectGuesses(prev => prev + correct.length);
+      setTotalRequiredPatternCells(prev => prev + totalPatternCells);
+  
+      console.log(`✅ Level ${currentLevel} correct: ${correct.length} / ${totalPatternCells}`);
+    };
   
     const nextLevel = () => {
       setCurrentLevel((prev) => prev + 1);
@@ -278,7 +328,12 @@ const levelPatterns = {
       setShowPattern(true);
     };
   
-    // ✅ Cell size based on gridSize
+    const isCellInPattern = (r, c) => pattern.some(([pr, pc]) => pr === r && pc === c);
+    const isCellClicked = (r, c) => userGrid.some(([ur, uc]) => ur === r && uc === c);
+    const isCellCorrect = (r, c) => correctCells.some(([cr, cc]) => cr === r && cc === c);
+    const isCellIncorrect = (r, c) => incorrectCells.some(([ir, ic]) => ir === r && ic === c);
+    const isCellMissed = (r, c) => missedCells.some(([mr, mc]) => mr === r && mc === c);
+  
     const getCellSize = () => {
       if (gridSize <= 5) return 70;
       if (gridSize <= 7) return 65;
@@ -289,6 +344,20 @@ const levelPatterns = {
     return (
       <div className="task1-container">
         <h2>Task 1: Pattern Matching</h2>
+        <p
+          style={{
+            position: "fixed",
+            top: "40px",
+            right: "20px",
+            background: "#fff",
+            padding: "4px 8px",
+            borderRadius: "8px",
+            fontWeight: "bold",
+          }}
+        >
+          🧠 Task 1 Time: {formatTime(taskElapsedTime)}
+        </p>
+  
         <h3>Level {currentLevel}</h3>
   
         {showPattern && <p>Memorize the pattern!</p>}
@@ -326,12 +395,12 @@ const levelPatterns = {
                 <div
                   key={`${row}-${col}`}
                   className={`cell 
-                      ${showBlue ? "pattern" : ""} 
-                      ${wasCorrectClick ? "clicked" : ""} 
-                      ${wasWrongClick ? "wrong" : ""}
-                      ${correct ? "correct" : ""} 
-                      ${incorrect ? "wrong" : ""}
-                      ${missed ? "missed" : ""}
+                    ${showBlue ? "pattern" : ""} 
+                    ${wasCorrectClick ? "clicked" : ""} 
+                    ${wasWrongClick ? "wrong" : ""}
+                    ${correct ? "correct" : ""} 
+                    ${incorrect ? "wrong" : ""}
+                    ${missed ? "missed" : ""}
                   `}
                   onClick={() => handleCellClick(row, col)}
                   style={{
