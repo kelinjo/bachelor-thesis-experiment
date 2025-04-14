@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "../styles/Task1.css";
+import { useNavigate } from "react-router-dom"; // Make sure this is at the top
 
 
 const levelPatterns = {
@@ -36,6 +37,7 @@ const levelPatterns = {
       gridSize: 5,
       allowedErrors: 1,
     },
+    /*
     4: {
       pattern: [
         [0, 0],
@@ -170,7 +172,7 @@ const levelPatterns = {
         gridSize: 7,
         allowedErrors: 3,
       },
-    
+     */
     
   };
 
@@ -205,12 +207,15 @@ const levelPatterns = {
     }, [currentLevel, level, totalAllowedClicks]);
   
     // ✅ Now we can check for missing level safely AFTER all hooks
+    const navigate = useNavigate();
+
     if (!level) {
       return (
         <div className="task1-container">
           <h2>🎉 Task 1 Complete!</h2>
           <p>You've completed all the levels in the Pattern Matching task.</p>
           <p>Well done! You can now proceed to the next task.</p>
+          <button onClick={() => navigate("/summary")}>Go to Summary</button> {/* ✅ */}
         </div>
       );
     }
