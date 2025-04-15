@@ -25,7 +25,7 @@ const levelPatterns = {
       ],
       gridSize: 5,
       allowedErrors: 1,
-    },
+    }, /*
     3: {
       pattern: [
         [0, 0],
@@ -38,7 +38,7 @@ const levelPatterns = {
       gridSize: 5,
       allowedErrors: 1,
     },
-    /*
+    
     4: {
       pattern: [
         [0, 0],
@@ -264,7 +264,7 @@ const levelPatterns = {
             You guessed {totalCorrectGuesses} out of {totalRequiredPatternCells} pattern cells correctly.<br />
             Your accuracy was: <strong>{accuracyPercent}%</strong>
           </p>
-          <button onClick={() => navigate("/summary")}>Go to Summary</button>
+          <button onClick={() => navigate("/task2-instructions")}>Proceed to Task 2</button>
         </div>
       );
     }
