@@ -335,9 +335,9 @@ const levelPatterns = {
     const isCellMissed = (r, c) => missedCells.some(([mr, mc]) => mr === r && mc === c);
   
     const getCellSize = () => {
-      if (gridSize <= 5) return 70;
-      if (gridSize <= 7) return 65;
-      if (gridSize <= 9) return 60;
+      if (gridSize <= 5) return 90;
+      if (gridSize <= 7) return 80;
+      if (gridSize <= 9) return 75;
       return 40;
     };
   
