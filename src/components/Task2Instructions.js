@@ -13,18 +13,32 @@ function Task2Instructions() {
     <div className="task2-instructions container">
       <h2>🗼 Task 2: Tower of Hanoi</h2>
       <p>
-        In this task, you'll solve the classic Tower of Hanoi puzzle. Your goal is to move all the disks from the first peg to the third peg, following the rules below:
+        In this task, you'll solve the classic Tower of Hanoi puzzle. Your goal is to move all the disks from the first peg to the third peg, following these rules:
       </p>
       <ul>
-        <li>🔄 Only one disk can be moved at a time</li>
-        <li>🪜 You may only move the top disk of a stack</li>
-        <li>📏 No disk may be placed on top of a smaller disk</li>
+        <li>🔄 You can only move <strong>one disk at a time</strong>.</li>
+        <li>🪜 You may only move the <strong>top disk</strong> from any peg.</li>
+        <li>📏 You <strong>cannot place a larger disk on top of a smaller one</strong>.</li>
       </ul>
+
       <p>
-        Try to complete the puzzle as quickly and efficiently as possible. We’ll be measuring your time and move count.
+        Your performance will be evaluated based on:
+      </p>
+      <ul>
+        <li>⏱️ Time it takes to complete the task</li>
+        <li>📦 Number of moves made</li>
+        <li>📈 Efficiency compared to the optimal number of moves</li>
+      </ul>
+
+      <h3>🎮 How to Play</h3>
+      <p>
+        Click on the peg from which you want to move a disk — this peg will become <strong>highlighted with a blue border</strong>. Then, click on the target peg where you'd like to move the selected disk. The game will only allow valid moves (e.g., no placing larger disks on smaller ones).
+      </p>
+      <p>
+        If you accidentally select the wrong peg, simply click it again to deselect.
       </p>
 
-      {/* Placeholder for future image */}
+      {/* You can insert a diagram here later if you like */}
       {/* <img src="path/to/hanoi-diagram.png" alt="Tower of Hanoi Example" /> */}
 
       <button onClick={handleStart}>Start Task</button>

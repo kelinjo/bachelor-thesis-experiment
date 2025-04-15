@@ -29,7 +29,7 @@
   
   
   .peg.selected {
-    border-color: #0077cc;
+    border: 4px solid #0077cc;
   }
   
   .disk {
@@ -42,5 +42,6 @@
     line-height: 35px; /* ⬆️ centers the number vertically */
     font-weight: bold;
     font-size: 18px;
+    user-select: none; /* ✅ Prevent text selection */
   }
   

@@ -3,24 +3,74 @@ import React, { useEffect, useState } from "react";
 function SummaryPage() {
   const [task1Data, setTask1Data] = useState(null);
   const [task2Data, setTask2Data] = useState(null);
+  const [experimentDuration, setExperimentDuration] = useState(null);
+  const [group, setGroup] = useState(null);
 
   useEffect(() => {
     const storedTask1 = localStorage.getItem("task1Results");
     const storedTask2 = localStorage.getItem("task2Results");
+    const start = localStorage.getItem("experimentStart");
+    const groupValue = localStorage.getItem("group");
 
-    if (storedTask1) {
-      setTask1Data(JSON.parse(storedTask1));
-    }
+    if (storedTask1) setTask1Data(JSON.parse(storedTask1));
+    if (storedTask2) setTask2Data(JSON.parse(storedTask2));
+    if (groupValue) setGroup(groupValue);
 
-    if (storedTask2) {
-      setTask2Data(JSON.parse(storedTask2));
+    if (start) {
+      const now = Date.now();
+      const durationMs = now - parseInt(start);
+      const formatted = `${Math.floor(durationMs / 60000)}m ${Math.floor(
+        (durationMs % 60000) / 1000
+      )}s`;
+      setExperimentDuration(formatted);
     }
   }, []);
+
+  const downloadCSV = () => {
+    const csvContent = [
+      [
+        "Group",
+        "Experiment Duration",
+        "Task1 Time",
+        "Task1 Accuracy (%)",
+        "Task1 Correct/Total",
+        "Task2 Time",
+        "Task2 Moves",
+        "Task2 Efficiency (%)",
+      ],
+      [
+        group || "N/A",
+        experimentDuration || "N/A",
+        task1Data?.time || "N/A",
+        task1Data?.accuracy || "N/A",
+        task1Data ? `"'${task1Data.correct}/${task1Data.total}'"` : "N/A",
+        task2Data?.time || "N/A",
+        task2Data?.moves || "N/A",
+        task2Data?.efficiency || "N/A",
+      ],
+    ]
+      .map((row) => row.join(","))
+      .join("\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", "experiment_results.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <div className="summary-container">
       <h1>📋 Experiment Complete!</h1>
       <p>Thank you for participating in the experiment.</p>
+
+      {group && <p><strong>Group:</strong> {group}</p>}
+      {experimentDuration && (
+        <p><strong>Total Experiment Duration:</strong> {experimentDuration}</p>
+      )}
 
       {task1Data && (
         <div style={{ marginTop: "2rem" }}>
@@ -42,6 +92,22 @@ function SummaryPage() {
           <p>📈 Efficiency: <strong>{task2Data.efficiency}%</strong></p>
         </div>
       )}
+
+      <button
+        onClick={downloadCSV}
+        style={{
+          marginTop: "2rem",
+          padding: "10px 20px",
+          fontSize: "16px",
+          fontWeight: "bold",
+          borderRadius: "8px",
+          border: "1px solid #333",
+          backgroundColor: "#f5f5f5",
+          cursor: "pointer",
+        }}
+      >
+        📤 Export Results (CSV)
+      </button>
     </div>
   );
 }
