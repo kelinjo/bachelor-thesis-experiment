@@ -232,6 +232,17 @@ const levelPatterns = {
       }, 2000);
       return () => clearTimeout(timer);
     }, [currentLevel, level, totalAllowedClicks]);
+
+    useEffect(() => {
+      localStorage.setItem("currentLevel", currentLevel);
+    
+      const hintLevels = [3, 7, 11]; // the levels that trigger hints
+      if (hintLevels.includes(currentLevel)) {
+        const event = new CustomEvent("triggerHint", { detail: currentLevel });
+        window.dispatchEvent(event);
+      }
+    }, [currentLevel]);
+    
   
     // 🎯 FINAL LEVEL COMPLETE — SHOW SUMMARY + STOP TIMER
     if (!level) {

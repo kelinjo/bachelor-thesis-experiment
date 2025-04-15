@@ -1,23 +1,27 @@
-/* styles/Notification.css */
+.notification-wrapper {
+  position: fixed;
+  top: 90px;
+  left: 85px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px; /* Spacing between stacked notifications */
+  z-index: 9999;
+  pointer-events: none; /* Prevent overlapping interaction */
+}
+
 .notification-toast {
-    position: fixed;
-    top: 90px;
-    left: 85px;
-    background: #f8f9fa;
-    border-left: 5px solid #0077cc;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    padding: 12px 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    z-index: 2000;
-    max-width: 300px;
-    font-family: sans-serif;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  .notification-toast p {
-    margin-top: 6px;
-    font-size: 15px;
-    color: #333;
-  }
-  
+  background: #f8f9fa;
+  border-left: 5px solid #0077cc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  padding: 12px 16px;
+  border-radius: 8px;
+  max-width: 300px;
+  font-family: sans-serif;
+  transition: all 0.3s ease-in-out;
+  pointer-events: auto; /* Allow clicking only inside each notification */
+}
+
+.notification-toast.hint {
+  background-color: #e8f5e9;
+  border-left: 4px solid #4caf50;
+}
