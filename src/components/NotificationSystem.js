@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import "../styles/Notification.css";
 
 const distractionMessages = [
@@ -24,54 +25,58 @@ function NotificationSystem() {
   const [visibleNotification, setVisibleNotification] = useState(null);
   const [isExpanded, setIsExpanded] = useState(false);
   const dismissTimeoutRef = useRef(null);
-  const originalContentRef = useRef(null); // Store original message
+  const notificationIntervalRef = useRef(null);
+  const originalContentRef = useRef(null);
+  const location = useLocation();
+
+  const startAutoDismissTimer = () => {
+    if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
+    dismissTimeoutRef.current = setTimeout(() => {
+      setVisibleNotification(null);
+      setIsExpanded(false);
+    }, 7000);
+  };
 
   useEffect(() => {
-    const checkAndStart = () => {
-      const group = localStorage.getItem("group");
-      const start = localStorage.getItem("experimentStart");
+    const group = localStorage.getItem("group");
+    const start = localStorage.getItem("experimentStart");
 
-      if (!group || !start) {
-        console.log("⏳ Waiting for group/experimentStart...");
-        setTimeout(checkAndStart, 1000);
-        return;
-      }
+    if (!group || !start) return;
 
-      console.log("✅ Notification system started for group:", group);
+    const groupIntervals = { A: 30, B: 25, C:20 };
+    const intervalSeconds = groupIntervals[group] || 60;
+    let counter = 1;
 
-      const groupIntervals = { A: 10, B: 10, C: 10 }; // for testing
-      const intervalSeconds = groupIntervals[group] || 60;
-      let counter = 1;
+    const generateNotification = () => {
+      // 🔇 If we're on the summary page, skip it
+      if (location.pathname === "/summary" || location.pathname === "/task1-instructions" || location.pathname === "/task2-instructions") return;
 
-      setInterval(() => {
-        const message =
-          distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
-        const now = new Date();
+      const message =
+        distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
+      const now = new Date();
 
-        const newNotification = {
-          id: `${now.getTime()}_${counter}`,
-          timestamp: now.toLocaleTimeString(),
-          content: message,
-          type: "distraction",
-          wasClicked: false,
-        };
+      const newNotification = {
+        id: `${now.getTime()}_${counter}`,
+        timestamp: now.toLocaleTimeString(),
+        content: message,
+        type: "distraction",
+        wasClicked: false,
+      };
 
-        originalContentRef.current = message;
-        setVisibleNotification(newNotification);
-        setIsExpanded(false);
-        logNotification(newNotification);
+      originalContentRef.current = message;
+      setVisibleNotification(newNotification);
+      setIsExpanded(false);
+      logNotification(newNotification);
+      startAutoDismissTimer();
 
-        if (dismissTimeoutRef.current) clearTimeout(dismissTimeoutRef.current);
-        dismissTimeoutRef.current = setTimeout(() => {
-          setVisibleNotification(null);
-        }, 5000);
-
-        counter++;
-      }, intervalSeconds * 1000);
+      counter++;
     };
 
-    checkAndStart();
-  }, []);
+    // 🕓 Start interval
+    notificationIntervalRef.current = setInterval(generateNotification, intervalSeconds * 1000);
+
+    return () => clearInterval(notificationIntervalRef.current);
+  }, [location.pathname]); // <- restart if route changes
 
   const handleNotificationClick = () => {
     if (!visibleNotification) return;
@@ -81,11 +86,6 @@ function NotificationSystem() {
       wasClicked: true,
       clickTime: new Date().toLocaleTimeString(),
     };
-
-    if (dismissTimeoutRef.current) {
-      clearTimeout(dismissTimeoutRef.current);
-      dismissTimeoutRef.current = null;
-    }
 
     if (!isExpanded) {
       const randomExtra =
@@ -105,6 +105,7 @@ ${randomExtra}`;
     }
 
     logNotification(updated);
+    startAutoDismissTimer(); // restart timer on click
   };
 
   const logNotification = (data) => {
@@ -112,7 +113,7 @@ ${randomExtra}`;
     localStorage.setItem("notificationLog", JSON.stringify([...prev, data]));
   };
 
-  return visibleNotification ? (
+  return visibleNotification && location.pathname !== "/summary" ? (
     <div className="notification-toast" onClick={handleNotificationClick}>
       <strong>🔔 Notification</strong>
       <pre style={{ whiteSpace: "pre-wrap", marginTop: "8px" }}>

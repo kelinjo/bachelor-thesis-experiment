@@ -19,17 +19,38 @@ function LandingPage() {
     <div className="container">
       <h1>The Psychology of Notifications</h1>
       <p>
-        Welcome! In this experiment, you will complete several simple tasks.
-        Based on your assigned group, you will receive notifications at different intervals.
-      </p>
-      <p className="warning">
-        ⚠️ Once you choose your group, the timer for the experiment will begin!
-      </p>
-      <div className="button-group">
-        <button onClick={() => handleGroupSelect("A")}>Group A</button>
-        <button onClick={() => handleGroupSelect("B")}>Group B</button>
-        <button onClick={() => handleGroupSelect("C")}>Group C</button>
-      </div>
+            Welcome to the experiment <strong>"The Psychology of Notifications"</strong>.
+            You’ll complete a series of simple yet mentally engaging tasks designed to measure focus,
+            attention, and problem-solving under varying conditions.
+          </p>
+
+          <p>
+            Throughout the experiment, you'll receive notifications at different intervals depending on the group you’re assigned to.
+            These notifications may include distractions—or even helpful hints—but you won’t know which until you engage with them.
+          </p>
+
+          <p>
+            Your performance, speed, and interaction with notifications will be recorded for analysis.
+            The entire experiment takes approximately <strong>25–30 minutes</strong> to complete.
+          </p>
+
+          <p className="warning">
+            ⚠️ <strong>Once you choose your group below, the global experiment timer will begin.</strong><br />
+            Make sure you're ready and free from interruptions.
+        </p>
+
+        <div className="button-group" style={{ display: "flex", flexDirection: "column", gap: "10px", alignItems: "center", marginTop: "1rem" }}>
+          <button onClick={() => handleGroupSelect("A")}>
+            📗 Group A – Low Distraction (Fewest notifications)
+          </button>
+          <button onClick={() => handleGroupSelect("B")}>
+            📘 Group B – Moderate Distraction
+          </button>
+          <button onClick={() => handleGroupSelect("C")}>
+            📙 Group C – High Distraction (Most notifications)
+          </button>
+        </div>
+
     </div>
   );
 }
