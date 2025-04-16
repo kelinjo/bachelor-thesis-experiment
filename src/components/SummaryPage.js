@@ -5,16 +5,19 @@ function SummaryPage() {
   const [task2Data, setTask2Data] = useState(null);
   const [experimentDuration, setExperimentDuration] = useState(null);
   const [group, setGroup] = useState(null);
+  const [notificationLog, setNotificationLog] = useState([]);
 
   useEffect(() => {
     const storedTask1 = localStorage.getItem("task1Results");
     const storedTask2 = localStorage.getItem("task2Results");
     const start = localStorage.getItem("experimentStart");
     const groupValue = localStorage.getItem("group");
+    const log = localStorage.getItem("notificationLog");
 
     if (storedTask1) setTask1Data(JSON.parse(storedTask1));
     if (storedTask2) setTask2Data(JSON.parse(storedTask2));
     if (groupValue) setGroup(groupValue);
+    if (log) setNotificationLog(JSON.parse(log));
 
     if (start) {
       const now = Date.now();
@@ -27,7 +30,7 @@ function SummaryPage() {
   }, []);
 
   const downloadCSV = () => {
-    const csvContent = [
+    const results = [
       [
         "Group",
         "Experiment Duration",
@@ -48,10 +51,20 @@ function SummaryPage() {
         task2Data?.moves || "N/A",
         task2Data?.efficiency || "N/A",
       ],
-    ]
-      .map((row) => row.join(","))
-      .join("\n");
+      [],
+      ["Notification Log:"],
+      ["ID", "Type", "Timestamp", "Clicked", "Click Time", "Content"],
+      ...notificationLog.map((n) => [
+        n.id,
+        n.type,
+        n.timestamp,
+        n.wasClicked ? "Yes" : "No",
+        n.clickTime || "",
+        (n.content || "").replace(/\n/g, " ").replace(/,/g, ";"),
+      ]),
+    ];
 
+    const csvContent = results.map((row) => row.join(",")).join("\n");
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");

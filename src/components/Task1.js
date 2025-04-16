@@ -25,7 +25,7 @@ const levelPatterns = {
       ],
       gridSize: 5,
       allowedErrors: 1,
-    }, 
+    }, /*
     3: {
       pattern: [
         [0, 0],
@@ -174,7 +174,7 @@ const levelPatterns = {
         allowedErrors: 3,
       },
     
-    
+    */
   };
 
   const Task1 = () => {

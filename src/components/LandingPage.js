@@ -12,8 +12,13 @@ function LandingPage() {
   const handleGroupSelect = (group) => {
     localStorage.setItem("group", group);
     localStorage.setItem("experimentStart", Date.now());
+  
+    // ✅ Clear previous logs
+    localStorage.removeItem("notificationLog");
+  
     navigate("/task1-instructions");
   };
+  
 
   return (
     <div className="container">
