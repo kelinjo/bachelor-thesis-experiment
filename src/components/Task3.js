@@ -36,6 +36,14 @@ const Task3 = () => {
   const intervalRef = useRef(null);
 
   useEffect(() => {
+    if (!taskCompleted) {
+      const startEvent = new CustomEvent("taskStatus", { detail: "start" });
+      window.dispatchEvent(startEvent);
+    }
+  }, [taskCompleted]);
+  
+
+  useEffect(() => {
     setStartTime(Date.now());
     intervalRef.current = setInterval(() => {
       setTaskElapsedTime(Date.now() - startTime);
@@ -90,6 +98,9 @@ const Task3 = () => {
 
   // ✅ Task 3 End Screen
   if (taskCompleted) {
+    const endEvent = new CustomEvent("taskStatus", { detail: "end" });
+    window.dispatchEvent(endEvent);
+
     const totalCorrect = answers.filter((a) => a.correct).length;
     const accuracyPercent = ((totalCorrect / 20) * 100).toFixed(1);
     const formattedTime = formatTime(taskElapsedTime);

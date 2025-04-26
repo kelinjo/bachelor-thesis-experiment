@@ -25,7 +25,7 @@ const levelPatterns = {
       ],
       gridSize: 5,
       allowedErrors: 1,
-    }, /*
+    }, 
     3: {
       pattern: [
         [0, 0],
@@ -37,7 +37,7 @@ const levelPatterns = {
       ],
       gridSize: 5,
       allowedErrors: 1,
-    },
+    }, /*
     
     4: {
       pattern: [
@@ -250,6 +250,10 @@ const levelPatterns = {
         clearInterval(intervalRef.current);
         intervalRef.current = null;
       }
+
+            // 🔥 ADD THIS:
+      const endEvent = new CustomEvent("taskStatus", { detail: "end" });
+      window.dispatchEvent(endEvent);
     
       const formattedTime = formatTime(taskElapsedTime);
       const accuracyPercent = ((totalCorrectGuesses / totalRequiredPatternCells) * 100).toFixed(1);

@@ -21,6 +21,14 @@ function Task2() {
   const intervalRef = useRef(null);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (!taskCompleted) {
+      const startEvent = new CustomEvent("taskStatus", { detail: "start" });
+      window.dispatchEvent(startEvent);
+    }
+  }, [taskCompleted]);
+  
+
   const level = levels[currentLevel];
   const diskCount = level?.diskCount;
   const pegCount = level?.pegCount;
@@ -91,6 +99,9 @@ function Task2() {
 
   // ✅ Final screen
   if (taskCompleted) {
+    const endEvent = new CustomEvent("taskStatus", { detail: "end" });
+    window.dispatchEvent(endEvent);
+
     const formattedTime = formatTime(taskElapsedTime);
     const efficiency = ((totalOptimalMoves / totalMoves) * 100).toFixed(1);
 

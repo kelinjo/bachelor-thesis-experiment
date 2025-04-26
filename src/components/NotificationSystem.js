@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import ReactDOM from "react-dom";
 import { useLocation } from "react-router-dom";
 import "../styles/Notification.css";
@@ -40,6 +40,7 @@ function NotificationSystem() {
   const originalContentRef = useRef({});
   const expandedContentRef = useRef({});
   const location = useLocation();
+  const [taskActive, setTaskActive] = useState(true); // ✅ NEW
 
   const startAutoDismissTimer = (id, duration = 5000) => {
     if (timersRef.current[id]) clearTimeout(timersRef.current[id]);
@@ -47,6 +48,21 @@ function NotificationSystem() {
       setVisibleNotifications((prev) => prev.filter((n) => n.id !== id));
     }, duration);
   };
+
+  useEffect(() => {
+    const handleTaskStatus = (e) => {
+      if (e.detail === "start") {
+        setTaskActive(true);
+      } else if (e.detail === "end") {
+        setTaskActive(false);
+        setVisibleNotifications([]); // ✅ this is the key
+      }
+    };
+  
+    window.addEventListener("taskStatus", handleTaskStatus);
+    return () => window.removeEventListener("taskStatus", handleTaskStatus);
+  }, []);
+  
 
   useEffect(() => {
     const group = localStorage.getItem("group");
@@ -58,12 +74,8 @@ function NotificationSystem() {
     let counter = 1;
 
     const generateNotification = () => {
-      if (
-        location.pathname === "/summary" ||
-        location.pathname === "/task1-instructions" ||
-        location.pathname === "/task2-instructions" ||
-        location.pathname === "/task3-instructions"
-      ) return;
+      if (!taskActive) return; // ✅ block if task is finished
+      if (location.pathname === "/summary") return;
 
       const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
       const expandMessage = expandMessages[Math.floor(Math.random() * expandMessages.length)];
@@ -92,7 +104,7 @@ function NotificationSystem() {
 
     const interval = setInterval(generateNotification, intervalSeconds * 1000);
     return () => clearInterval(interval);
-  }, [location.pathname]);
+  }, [location.pathname, taskActive]); // ✅ re-run if taskActive changes
 
   useEffect(() => {
     const handleHintTrigger = (e) => {
