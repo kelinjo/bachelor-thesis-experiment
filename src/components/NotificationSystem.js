@@ -22,21 +22,27 @@ const expandMessages = [
   "A little curiosity never hurt… but don’t fall behind 😉",
 ];
 
-const hintMessages = {
+const task1Hints = {
   3: "🔍 Hint: This pattern is symmetrical.",
   7: "🧠 Hint: Focus on the corners first.",
   11: "👁️ Hint: It forms a diagonal line.",
+};
+
+const task3Hints = {
+  3: "🧮 Hint: Don’t forget your multiplication tables!",
+  12: "💡 Hint: A square plus a square root — simplify step-by-step.",
+  20: "🧠 Hint: Remember PEMDAS — parentheses, exponents, then multiply.",
 };
 
 function NotificationSystem() {
   const [visibleNotifications, setVisibleNotifications] = useState([]);
   const timersRef = useRef({});
   const originalContentRef = useRef({});
+  const expandedContentRef = useRef({});
   const location = useLocation();
 
-  const startAutoDismissTimer = (id, duration = 7000) => {
+  const startAutoDismissTimer = (id, duration = 5000) => {
     if (timersRef.current[id]) clearTimeout(timersRef.current[id]);
-
     timersRef.current[id] = setTimeout(() => {
       setVisibleNotifications((prev) => prev.filter((n) => n.id !== id));
     }, duration);
@@ -45,10 +51,9 @@ function NotificationSystem() {
   useEffect(() => {
     const group = localStorage.getItem("group");
     const start = localStorage.getItem("experimentStart");
-
     if (!group || !start) return;
 
-    const groupIntervals = { A: 30, B: 25, C: 20 };
+    const groupIntervals = { A: 30, B: 25, C: 10 };
     const intervalSeconds = groupIntervals[group] || 60;
     let counter = 1;
 
@@ -56,22 +61,25 @@ function NotificationSystem() {
       if (
         location.pathname === "/summary" ||
         location.pathname === "/task1-instructions" ||
-        location.pathname === "/task2-instructions"
-      )
-        return;
+        location.pathname === "/task2-instructions" ||
+        location.pathname === "/task3-instructions"
+      ) return;
 
-      const message = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
+      const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
+      const expandMessage = expandMessages[Math.floor(Math.random() * expandMessages.length)];
       const now = new Date();
 
       const newNotification = {
         id: `distraction_${now.getTime()}_${counter}`,
         timestamp: now.toLocaleTimeString(),
-        content: message,
+        content: baseMessage,
         type: "distraction",
         wasClicked: false,
       };
 
-      originalContentRef.current[newNotification.id] = message;
+      originalContentRef.current[newNotification.id] = baseMessage;
+      expandedContentRef.current[newNotification.id] = expandMessage;
+
       setVisibleNotifications((prev) => [
         ...prev.filter((n) => n.type !== "distraction"),
         newNotification,
@@ -89,19 +97,29 @@ function NotificationSystem() {
   useEffect(() => {
     const handleHintTrigger = (e) => {
       const level = e.detail;
-      const hintText = hintMessages[level];
+      let hintText = null;
+
+      if (location.pathname.includes("/task1")) {
+        hintText = task1Hints[level];
+      } else if (location.pathname.includes("/task3")) {
+        hintText = task3Hints[level];
+      }
       if (!hintText) return;
 
+      const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
       const now = new Date();
+
       const hintNotification = {
         id: `hint_${level}_${now.getTime()}`,
         timestamp: now.toLocaleTimeString(),
-        content: hintText,
+        content: baseMessage,
         type: "hint",
         wasClicked: false,
       };
 
-      originalContentRef.current[hintNotification.id] = hintText;
+      originalContentRef.current[hintNotification.id] = baseMessage;
+      expandedContentRef.current[hintNotification.id] = hintText;
+
       setVisibleNotifications((prev) => [
         ...prev.filter((n) => n.type !== "hint"),
         hintNotification,
@@ -112,7 +130,7 @@ function NotificationSystem() {
 
     window.addEventListener("triggerHint", handleHintTrigger);
     return () => window.removeEventListener("triggerHint", handleHintTrigger);
-  }, []);
+  }, [location.pathname]);
 
   const handleNotificationClick = (notification) => {
     const isExpanded = notification.id === notification.wasExpandedId;
@@ -127,7 +145,7 @@ function NotificationSystem() {
 
 ---
 
-${expandMessages[Math.floor(Math.random() * expandMessages.length)]}`;
+${expandedContentRef.current[notification.id]}`;
 
     setVisibleNotifications((prev) =>
       prev.map((n) => {
@@ -152,14 +170,14 @@ ${expandMessages[Math.floor(Math.random() * expandMessages.length)]}`;
   const renderNotification = (notification, index) => (
     <div
       key={notification.id}
-      className={`notification-toast ${notification.type === "hint" ? "hint" : ""}`}
+      className="notification-toast"
       onClick={() => handleNotificationClick(notification)}
       style={{
         top: `${90 + index * 120}px`,
         left: "85px",
       }}
     >
-      <strong>{notification.type === "hint" ? "💡 Hint" : "🔔 Notification"}</strong>
+      <strong>🔔 Notification</strong>
       <pre style={{ whiteSpace: "pre-wrap", marginTop: "8px" }}>
         {notification.content}
       </pre>
@@ -175,7 +193,6 @@ ${expandMessages[Math.floor(Math.random() * expandMessages.length)]}`;
       ),
     document.body
   );
-  
 }
 
 export default NotificationSystem;

@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Task2.css";
 
 const levels = {
-  1: { diskCount: 3, pegCount: 3 },
-  2: { diskCount: 4, pegCount: 3 },
+  1: { diskCount: 3, pegCount: 3 }, /*
+  2: { diskCount: 4, pegCount: 3 }, */
 };
 
 function Task2() {
@@ -101,7 +101,7 @@ function Task2() {
         <p>Total Task Time: {formattedTime}</p>
         <p>Total Moves Made: {totalMoves}</p>
         <p>Efficiency: <strong>{efficiency}%</strong></p>
-        <button onClick={() => navigate("/summary")}>Go to Summary</button>
+        <button onClick={() => navigate("/task3-instructions")}>Next Task</button>
       </div>
     );
   }

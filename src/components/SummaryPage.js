@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 function SummaryPage() {
   const [task1Data, setTask1Data] = useState(null);
   const [task2Data, setTask2Data] = useState(null);
+  const [task3Data, setTask3Data] = useState(null); // ✅ Added task3Data
   const [experimentDuration, setExperimentDuration] = useState(null);
   const [group, setGroup] = useState(null);
   const [notificationLog, setNotificationLog] = useState([]);
@@ -10,12 +11,14 @@ function SummaryPage() {
   useEffect(() => {
     const storedTask1 = localStorage.getItem("task1Results");
     const storedTask2 = localStorage.getItem("task2Results");
+    const storedTask3 = localStorage.getItem("task3Results"); // ✅ Fetch task3 results
     const start = localStorage.getItem("experimentStart");
     const groupValue = localStorage.getItem("group");
     const log = localStorage.getItem("notificationLog");
 
     if (storedTask1) setTask1Data(JSON.parse(storedTask1));
     if (storedTask2) setTask2Data(JSON.parse(storedTask2));
+    if (storedTask3) setTask3Data(JSON.parse(storedTask3)); // ✅ Save task3Data
     if (groupValue) setGroup(groupValue);
     if (log) setNotificationLog(JSON.parse(log));
 
@@ -40,6 +43,9 @@ function SummaryPage() {
         "Task2 Time",
         "Task2 Moves",
         "Task2 Efficiency (%)",
+        "Task3 Time",
+        "Task3 Accuracy (%)",
+        "Task3 Correct/Total",
       ],
       [
         group || "N/A",
@@ -50,6 +56,9 @@ function SummaryPage() {
         task2Data?.time || "N/A",
         task2Data?.moves || "N/A",
         task2Data?.efficiency || "N/A",
+        task3Data?.time || "N/A", // ✅ Added for task3
+        task3Data?.accuracy || "N/A",
+        task3Data ? `"'${task3Data.correct}/${task3Data.total}'"` : "N/A",
       ],
       [],
       ["Notification Log:"],
@@ -103,6 +112,18 @@ function SummaryPage() {
           <p>⏱️ Total Time: <strong>{task2Data.time}</strong></p>
           <p>📦 Total Moves Made: <strong>{task2Data.moves}</strong></p>
           <p>📈 Efficiency: <strong>{task2Data.efficiency}%</strong></p>
+        </div>
+      )}
+
+      {task3Data && (
+        <div style={{ marginTop: "2rem" }}>
+          <h3>➕ Task 3: Quick Math</h3>
+          <p>⏱️ Total Time: <strong>{task3Data.time}</strong></p>
+          <p>
+            🎯 Correct Answers: <strong>{task3Data.correct}</strong> out of{" "}
+            <strong>{task3Data.total}</strong>
+          </p>
+          <p>📊 Final Accuracy: <strong>{task3Data.accuracy}%</strong></p>
         </div>
       )}
 
