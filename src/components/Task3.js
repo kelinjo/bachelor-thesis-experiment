@@ -48,6 +48,9 @@ const Task3 = () => {
 
   useEffect(() => {
     if (!taskCompleted) {
+      // 🔥 Reset DND when starting Task3
+      localStorage.removeItem("dndActivated");
+
       const startEvent = new CustomEvent("taskStatus", { detail: "start" });
       window.dispatchEvent(startEvent);
     }
@@ -75,8 +78,7 @@ const Task3 = () => {
 
     setAnswers((prev) => [...prev, { level: currentLevel, selected, correct }]);
 
-    if (currentLevel < Object.keys(mathLevels).length) { 
-      // ✅ Correct: don't hardcode 20, use actual number of questions
+    if (currentLevel < Object.keys(mathLevels).length) {
       setCurrentLevel((prev) => prev + 1);
     } else {
       clearInterval(intervalRef.current);
@@ -107,6 +109,13 @@ const Task3 = () => {
 
   const question = mathLevels[currentLevel];
 
+  // 🛑 Handle DND button press
+  const handleDND = () => {
+    localStorage.setItem("dndActivated", "true");
+    const event = new CustomEvent("taskStatus", { detail: "end" });
+    window.dispatchEvent(event);
+  };
+
   if (taskCompleted) {
     const endEvent = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(endEvent);
@@ -129,6 +138,7 @@ const Task3 = () => {
 
   return (
     <div className="task3-container">
+      {/* ⏱️ Task timer */}
       <p
         style={{
           position: "fixed",
@@ -142,6 +152,28 @@ const Task3 = () => {
       >
         ⏱️ Time: {formatTime(taskElapsedTime)}
       </p>
+
+      {/* 🛑 DND BUTTON only if not already activated */}
+      {localStorage.getItem("dndActivated") !== "true" && (
+        <button
+          onClick={handleDND}
+          style={{
+            position: "fixed",
+            top: "100px",         // ⬅️ Moved down below timer
+            right: "20px",       // ⬅️ Same side as timer (right side)
+            backgroundColor: "#ff4d4d",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            padding: "6px 12px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            zIndex: 1000,        // ⬅️ Always above everything
+          }}
+        >
+          🛑 Do Not Disturb
+      </button>
+      )}
 
       <h2>🧮 Level {currentLevel}</h2>
       <p>{question?.question}</p>

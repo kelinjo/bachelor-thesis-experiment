@@ -27,7 +27,6 @@ function Task2() {
       window.dispatchEvent(startEvent);
     }
   }, [taskCompleted]);
-  
 
   const level = levels[currentLevel];
   const diskCount = level?.diskCount;
@@ -37,7 +36,6 @@ function Task2() {
     .map((lvl) => Math.pow(2, lvl.diskCount) - 1)
     .reduce((sum, val) => sum + val, 0);
 
-  // ⏱️ Start timer
   useEffect(() => {
     const start = Date.now();
     setTaskStartTime(start);
@@ -49,7 +47,6 @@ function Task2() {
     return () => clearInterval(intervalRef.current);
   }, []);
 
-  // Setup level
   useEffect(() => {
     if (!level) return;
     const initialPegs = Array.from({ length: pegCount }, () => []);
@@ -59,7 +56,6 @@ function Task2() {
     setSelectedPeg(null);
   }, [currentLevel]);
 
-  // Detect final level complete
   useEffect(() => {
     const isFinalLevel = !levels[currentLevel + 1];
     const isCorrectOrder =
@@ -97,27 +93,6 @@ function Task2() {
     return `${minutes}:${seconds}`;
   };
 
-  // ✅ Final screen
-  if (taskCompleted) {
-    const endEvent = new CustomEvent("taskStatus", { detail: "end" });
-    window.dispatchEvent(endEvent);
-
-    const formattedTime = formatTime(taskElapsedTime);
-    const efficiency = ((totalOptimalMoves / totalMoves) * 100).toFixed(1);
-
-    return (
-      <div className="task2-container">
-        <h2>🎉 Task 2 Complete!</h2>
-        <p>You’ve finished all Tower of Hanoi levels!</p>
-        <p>Total Task Time: {formattedTime}</p>
-        <p>Total Moves Made: {totalMoves}</p>
-        <p>Efficiency: <strong>{efficiency}%</strong></p>
-        <button onClick={() => navigate("/task3-instructions")}>Next Task</button>
-      </div>
-    );
-  }
-
-  // 🧠 Move logic
   const handlePegClick = (pegIndex) => {
     if (selectedPeg === null) {
       if (pegs[pegIndex].length === 0) return;
@@ -142,7 +117,7 @@ function Task2() {
 
         setPegs(newPegs);
         setMoveCount((prev) => prev + 1);
-        setTotalMoves((prev) => prev + 1); // ✅ accumulate
+        setTotalMoves((prev) => prev + 1);
       }
 
       setSelectedPeg(null);
@@ -158,6 +133,33 @@ function Task2() {
   };
 
   const optimalMoves = Math.pow(2, diskCount) - 1;
+
+  // 🛑 Handle DND button press
+  const handleDND = () => {
+    localStorage.setItem("dndActivated", "true");
+    const event = new CustomEvent("taskStatus", { detail: "end" });
+    window.dispatchEvent(event);
+  };
+
+  // ✅ Final screen
+  if (taskCompleted) {
+    const endEvent = new CustomEvent("taskStatus", { detail: "end" });
+    window.dispatchEvent(endEvent);
+
+    const formattedTime = formatTime(taskElapsedTime);
+    const efficiency = ((totalOptimalMoves / totalMoves) * 100).toFixed(1);
+
+    return (
+      <div className="task2-container">
+        <h2>🎉 Task 2 Complete!</h2>
+        <p>You’ve finished all Tower of Hanoi levels!</p>
+        <p>Total Task Time: {formattedTime}</p>
+        <p>Total Moves Made: {totalMoves}</p>
+        <p>Efficiency: <strong>{efficiency}%</strong></p>
+        <button onClick={() => navigate("/task3-instructions")}>Next Task</button>
+      </div>
+    );
+  }
 
   return (
     <div className="task2-container">
@@ -175,6 +177,28 @@ function Task2() {
       >
         🧠 Task 2 Time: {formatTime(taskElapsedTime)}
       </p>
+
+      {/* 🛑 DND BUTTON only if not already activated */}
+      {localStorage.getItem("dndActivated") !== "true" && (
+       <button
+          onClick={handleDND}
+          style={{
+            position: "fixed",
+            top: "100px",         // ⬅️ Moved down below timer
+            right: "20px",       // ⬅️ Same side as timer (right side)
+            backgroundColor: "#ff4d4d",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            padding: "6px 12px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            zIndex: 1000,        // ⬅️ Always above everything
+          }}
+        >
+          🛑 Do Not Disturb
+      </button>
+      )}
 
       <h2>🗼 Task 2: Tower of Hanoi</h2>
       <p>
@@ -218,3 +242,4 @@ function Task2() {
 }
 
 export default Task2;
+

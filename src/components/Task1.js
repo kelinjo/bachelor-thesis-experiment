@@ -31,264 +31,284 @@ const levelPatterns = {
 };
 
 
-  const Task1 = () => {
-    const [currentLevel, setCurrentLevel] = useState(1);
-    const [showPattern, setShowPattern] = useState(true);
-    const [userGrid, setUserGrid] = useState([]);
-    const [clicksLeft, setClicksLeft] = useState(0);
-    const [submitted, setSubmitted] = useState(false);
-    const [correctCells, setCorrectCells] = useState([]);
-    const [incorrectCells, setIncorrectCells] = useState([]);
-    const [missedCells, setMissedCells] = useState([]);
-    const [levelCompleted, setLevelCompleted] = useState(false);
-  
-    const [taskStartTime, setTaskStartTime] = useState(null);
-    const [taskElapsedTime, setTaskElapsedTime] = useState(0);
-    const intervalRef = useRef(null);
-  
-    // ✅ New: Tracking accuracy across all levels
-    const [totalCorrectGuesses, setTotalCorrectGuesses] = useState(0);
-    const [totalRequiredPatternCells, setTotalRequiredPatternCells] = useState(0);
-  
-    const navigate = useNavigate();
-  
-    const level = levelPatterns[currentLevel]; // may be undefined
-    const pattern = level?.pattern || [];
-    const gridSize = level?.gridSize || 0;
-    const allowedErrors = level?.allowedErrors || 0;
-    const totalPatternCells = pattern.length;
-    const totalAllowedClicks = totalPatternCells + allowedErrors;
-  
-    const formatTime = (ms) => {
-      const totalSeconds = Math.floor(ms / 1000);
-      const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
-      const seconds = (totalSeconds % 60).toString().padStart(2, "0");
-      return `${minutes}:${seconds}`;
-    };
-  
-    useEffect(() => {
-      const start = Date.now();
-      setTaskStartTime(start);
-  
-      intervalRef.current = setInterval(() => {
-        setTaskElapsedTime(Date.now() - start);
-      }, 1000);
-  
-      return () => clearInterval(intervalRef.current);
-    }, []);
-  
-    useEffect(() => {
-      if (!level) return;
-  
-      setClicksLeft(totalAllowedClicks);
-      const timer = setTimeout(() => {
-        setShowPattern(false);
-      }, 2000);
-      return () => clearTimeout(timer);
-    }, [currentLevel, level, totalAllowedClicks]);
+const Task1 = () => {
+  const [currentLevel, setCurrentLevel] = useState(1);
+  const [showPattern, setShowPattern] = useState(true);
+  const [totalCorrectGuesses, setTotalCorrectGuesses] = useState(0);
+  const [totalRequiredPatternCells, setTotalRequiredPatternCells] = useState(0);
+  const [userGrid, setUserGrid] = useState([]);
+  const [clicksLeft, setClicksLeft] = useState(0);
+  const [submitted, setSubmitted] = useState(false);
+  const [correctCells, setCorrectCells] = useState([]);
+  const [incorrectCells, setIncorrectCells] = useState([]);
+  const [missedCells, setMissedCells] = useState([]);
+  const [levelCompleted, setLevelCompleted] = useState(false);
+  const [taskStartTime, setTaskStartTime] = useState(null);
+  const [taskElapsedTime, setTaskElapsedTime] = useState(0);
+  const intervalRef = useRef(null);
 
-    useEffect(() => {
-      localStorage.setItem("currentLevel", currentLevel);
-    
-      const hintLevels = [3, 10, 16]; // the levels that trigger hints
-      if (hintLevels.includes(currentLevel)) {
-        const event = new CustomEvent("triggerHint", { detail: currentLevel });
-        window.dispatchEvent(event);
-      }
-    }, [currentLevel]);
-    
-  
-    // 🎯 FINAL LEVEL COMPLETE — SHOW SUMMARY + STOP TIMER
-    if (!level) {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-        intervalRef.current = null;
-      }
+  const navigate = useNavigate();
 
-            // 🔥 ADD THIS:
-      const endEvent = new CustomEvent("taskStatus", { detail: "end" });
-      window.dispatchEvent(endEvent);
-    
-      const formattedTime = formatTime(taskElapsedTime);
-      const accuracyPercent = ((totalCorrectGuesses / totalRequiredPatternCells) * 100).toFixed(1);
-    
-      // ✅ Save task results to localStorage
-      localStorage.setItem(
-        "task1Results",
-        JSON.stringify({
-          time: formattedTime,
-          correct: totalCorrectGuesses,
-          total: totalRequiredPatternCells,
-          accuracy: accuracyPercent
-        })
-      );
-    
-      return (
-        <div className="task1-container">
-          <h2>🎉 Task 1 Complete!</h2>
-          <p>You've completed all the levels in the Pattern Matching task.</p>
-          <p>Well done! You can now proceed to the next task.</p>
-          <p>Total Task Time: {formattedTime}</p>
-          <p>
-            You guessed {totalCorrectGuesses} out of {totalRequiredPatternCells} pattern cells correctly.<br />
-            Your accuracy was: <strong>{accuracyPercent}%</strong>
-          </p>
-          <button onClick={() => navigate("/task2-instructions")}>Proceed to Task 2</button>
-        </div>
-      );
+  const level = levelPatterns[currentLevel];
+  const pattern = level?.pattern || [];
+  const gridSize = level?.gridSize || 0;
+  const allowedErrors = level?.allowedErrors || 0;
+  const totalPatternCells = pattern.length;
+  const totalAllowedClicks = totalPatternCells + allowedErrors;
+
+  const formatTime = (ms) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, "0");
+    const seconds = (totalSeconds % 60).toString().padStart(2, "0");
+    return `${minutes}:${seconds}`;
+  };
+
+  useEffect(() => {
+    const start = Date.now();
+    setTaskStartTime(start);
+
+    intervalRef.current = setInterval(() => {
+      setTaskElapsedTime(Date.now() - start);
+    }, 1000);
+
+    return () => clearInterval(intervalRef.current);
+  }, []);
+
+  useEffect(() => {
+    if (!level) return;
+
+    setClicksLeft(totalAllowedClicks);
+    const timer = setTimeout(() => {
+      setShowPattern(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [currentLevel, level, totalAllowedClicks]);
+
+  useEffect(() => {
+    localStorage.setItem("currentLevel", currentLevel);
+
+    const hintLevels = [3, 10, 16];
+    if (hintLevels.includes(currentLevel)) {
+      const event = new CustomEvent("triggerHint", { detail: currentLevel });
+      window.dispatchEvent(event);
     }
-    
-  
-    const handleCellClick = (row, col) => {
-      if (showPattern || submitted || clicksLeft <= 0) return;
-  
-      const alreadyClicked = userGrid.some(([r, c]) => r === row && c === col);
-      if (alreadyClicked) return;
-  
-      const updatedGrid = [...userGrid, [row, col]];
-      setUserGrid(updatedGrid);
-      setClicksLeft((prev) => prev - 1);
-  
-      const correctClicks = updatedGrid.filter(([r, c]) =>
-        pattern.some(([pr, pc]) => pr === r && pc === c)
-      );
-  
-      const gotAllCorrect = correctClicks.length === totalPatternCells;
-  
-      if (gotAllCorrect || updatedGrid.length === totalAllowedClicks) {
-        evaluateGuess(updatedGrid);
-      }
-    };
-  
-    const evaluateGuess = (guesses) => {
-      const correct = guesses.filter(([r, c]) =>
-        pattern.some(([pr, pc]) => pr === r && pc === c)
-      );
-  
-      const incorrect = guesses.filter(([r, c]) =>
-        !pattern.some(([pr, pc]) => pr === r && pc === c)
-      );
-  
-      const missed = pattern.filter(
-        ([r, c]) => !guesses.some(([gr, gc]) => gr === r && gc === c)
-      );
-  
-      setCorrectCells(correct);
-      setIncorrectCells(incorrect);
-      setMissedCells(missed);
-      setSubmitted(true);
-      setLevelCompleted(true);
-  
-      // ✅ Update total stats
-      setTotalCorrectGuesses(prev => prev + correct.length);
-      setTotalRequiredPatternCells(prev => prev + totalPatternCells);
-  
-      console.log(`✅ Level ${currentLevel} correct: ${correct.length} / ${totalPatternCells}`);
-    };
-  
-    const nextLevel = () => {
-      setCurrentLevel((prev) => prev + 1);
-      setUserGrid([]);
-      setSubmitted(false);
-      setCorrectCells([]);
-      setIncorrectCells([]);
-      setMissedCells([]);
-      setLevelCompleted(false);
-      setShowPattern(true);
-    };
-  
-    const isCellInPattern = (r, c) => pattern.some(([pr, pc]) => pr === r && pc === c);
-    const isCellClicked = (r, c) => userGrid.some(([ur, uc]) => ur === r && uc === c);
-    const isCellCorrect = (r, c) => correctCells.some(([cr, cc]) => cr === r && cc === c);
-    const isCellIncorrect = (r, c) => incorrectCells.some(([ir, ic]) => ir === r && ic === c);
-    const isCellMissed = (r, c) => missedCells.some(([mr, mc]) => mr === r && mc === c);
-  
-    const getCellSize = () => {
-      if (gridSize <= 5) return 80;
-      if (gridSize <= 7) return 68;
-      return 40;
-    };
-  
+  }, [currentLevel]);
+
+  const handleCellClick = (row, col) => {
+    if (showPattern || submitted || clicksLeft <= 0) return;
+
+    const alreadyClicked = userGrid.some(([r, c]) => r === row && c === col);
+    if (alreadyClicked) return;
+
+    const updatedGrid = [...userGrid, [row, col]];
+    setUserGrid(updatedGrid);
+    setClicksLeft((prev) => prev - 1);
+
+    const correctClicks = updatedGrid.filter(([r, c]) =>
+      pattern.some(([pr, pc]) => pr === r && pc === c)
+    );
+
+    const gotAllCorrect = correctClicks.length === totalPatternCells;
+
+    if (gotAllCorrect || updatedGrid.length === totalAllowedClicks) {
+      evaluateGuess(updatedGrid);
+    }
+  };
+
+  const evaluateGuess = (guesses) => {
+    const correct = guesses.filter(([r, c]) =>
+      pattern.some(([pr, pc]) => pr === r && pc === c)
+    );
+
+    const incorrect = guesses.filter(([r, c]) =>
+      !pattern.some(([pr, pc]) => pr === r && pc === c)
+    );
+
+    const missed = pattern.filter(
+      ([r, c]) => !guesses.some(([gr, gc]) => gr === r && gc === c)
+    );
+
+    setCorrectCells(correct);
+    setIncorrectCells(incorrect);
+    setMissedCells(missed);
+    setSubmitted(true);
+    setLevelCompleted(true);
+
+    setTotalCorrectGuesses(prev => prev + correct.length);
+    setTotalRequiredPatternCells(prev => prev + totalPatternCells);
+  };
+
+  const nextLevel = () => {
+    setCurrentLevel((prev) => prev + 1);
+    setUserGrid([]);
+    setSubmitted(false);
+    setCorrectCells([]);
+    setIncorrectCells([]);
+    setMissedCells([]);
+    setLevelCompleted(false);
+    setShowPattern(true);
+  };
+
+  // 🛑 Handle DND button press
+  const handleDND = () => {
+    localStorage.setItem("dndActivated", "true");
+    const event = new CustomEvent("taskStatus", { detail: "end" });
+    window.dispatchEvent(event);
+  };
+
+  const isCellInPattern = (r, c) => pattern.some(([pr, pc]) => pr === r && pc === c);
+  const isCellClicked = (r, c) => userGrid.some(([ur, uc]) => ur === r && uc === c);
+  const isCellCorrect = (r, c) => correctCells.some(([cr, cc]) => cr === r && cc === c);
+  const isCellIncorrect = (r, c) => incorrectCells.some(([ir, ic]) => ir === r && ic === c);
+  const isCellMissed = (r, c) => missedCells.some(([mr, mc]) => mr === r && mc === c);
+
+  const getCellSize = () => {
+    if (gridSize <= 5) return 80;
+    if (gridSize <= 7) return 68;
+    return 40;
+  };
+
+  // 🎯 FINAL LEVEL COMPLETE — SHOW SUMMARY + STOP TIMER
+  if (!level) {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
+    const endEvent = new CustomEvent("taskStatus", { detail: "end" });
+    window.dispatchEvent(endEvent);
+
+    const formattedTime = formatTime(taskElapsedTime);
+    const accuracyPercent = ((totalCorrectGuesses / totalRequiredPatternCells) * 100).toFixed(1);
+
+    localStorage.setItem(
+      "task1Results",
+      JSON.stringify({
+        time: formattedTime,
+        correct: totalCorrectGuesses,
+        total: totalRequiredPatternCells,
+        accuracy: accuracyPercent
+      })
+    );
+
     return (
       <div className="task1-container">
-        <h2>Task 1: Pattern Matching</h2>
-        <p
-          style={{
-            position: "fixed",
-            top: "40px",
-            right: "20px",
-            background: "#fff",
-            padding: "4px 8px",
-            borderRadius: "8px",
-            fontWeight: "bold",
-          }}
-        >
-          🧠 Task 1 Time: {formatTime(taskElapsedTime)}
+        <h2>🎉 Task 1 Complete!</h2>
+        <p>You've completed all the levels in the Pattern Matching task.</p>
+        <p>Well done! You can now proceed to the next task.</p>
+        <p>Total Task Time: {formattedTime}</p>
+        <p>
+          You guessed {totalCorrectGuesses} out of {totalRequiredPatternCells} pattern cells correctly.<br />
+          Your accuracy was: <strong>{accuracyPercent}%</strong>
         </p>
-  
-        <h3>Level {currentLevel}</h3>
-  
-        {showPattern && <p>Memorize the pattern!</p>}
-        {!showPattern && !submitted && (
-          <p>
-            Click the pattern (you have {clicksLeft} click{clicksLeft !== 1 && "s left"}).
-          </p>
-        )}
-        {submitted && (
-          <p>
-            You got {correctCells.length} out of {totalPatternCells} correct.
-          </p>
-        )}
-  
-        <div
-          className="grid"
-          style={{
-            display: "grid",
-            gridTemplateColumns: `repeat(${gridSize}, ${getCellSize()}px)`,
-            gap: "5px",
-            justifyContent: "center",
-          }}
-        >
-          {Array.from({ length: gridSize }).map((_, row) =>
-            Array.from({ length: gridSize }).map((_, col) => {
-              const showBlue = showPattern && isCellInPattern(row, col);
-              const clicked = isCellClicked(row, col);
-              const wasCorrectClick = clicked && pattern.some(([pr, pc]) => pr === row && pc === col);
-              const wasWrongClick = clicked && !wasCorrectClick;
-              const correct = submitted && isCellCorrect(row, col);
-              const incorrect = submitted && isCellIncorrect(row, col);
-              const missed = submitted && isCellMissed(row, col);
-  
-              return (
-                <div
-                  key={`${row}-${col}`}
-                  className={`cell 
-                    ${showBlue ? "pattern" : ""} 
-                    ${wasCorrectClick ? "clicked" : ""} 
-                    ${wasWrongClick ? "wrong" : ""}
-                    ${correct ? "correct" : ""} 
-                    ${incorrect ? "wrong" : ""}
-                    ${missed ? "missed" : ""}
-                  `}
-                  onClick={() => handleCellClick(row, col)}
-                  style={{
-                    width: `${getCellSize()}px`,
-                    height: `${getCellSize()}px`,
-                  }}
-                />
-              );
-            })
-          )}
-        </div>
-  
-        {levelCompleted && (
-          <button className="next-level-btn" onClick={nextLevel}>
-            Next Level
-          </button>
-        )}
+        <button onClick={() => navigate("/task2-instructions")}>Proceed to Task 2</button>
       </div>
     );
-  };
-  
-  export default Task1;
+  }
+
+  return (
+    <div className="task1-container">
+      <h2>Task 1: Pattern Matching</h2>
+      <p
+        style={{
+          position: "fixed",
+          top: "40px",
+          right: "20px",
+          background: "#fff",
+          padding: "4px 8px",
+          borderRadius: "8px",
+          fontWeight: "bold",
+        }}
+      >
+        🧠 Task 1 Time: {formatTime(taskElapsedTime)}
+      </p>
+
+      {/* 🛑 DND BUTTON only if not already activated */}
+      {localStorage.getItem("dndActivated") !== "true" && (
+        <button
+            onClick={handleDND}
+            style={{
+              position: "fixed",
+              top: "100px",         // ⬅️ Moved down below timer
+              right: "20px",       // ⬅️ Same side as timer (right side)
+              backgroundColor: "#ff4d4d",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              padding: "6px 12px",
+              fontWeight: "bold",
+              cursor: "pointer",
+              zIndex: 1000,        // ⬅️ Always above everything
+            }}
+          >
+            🛑 Do Not Disturb
+        </button>
+      )}
+
+      <h3>Level {currentLevel}</h3>
+
+      {showPattern && <p>Memorize the pattern!</p>}
+      {!showPattern && !submitted && (
+        <p>
+          Click the pattern (you have {clicksLeft} click{clicksLeft !== 1 && "s left"}).
+        </p>
+      )}
+      {submitted && (
+        <p>
+          You got {correctCells.length} out of {totalPatternCells} correct.
+        </p>
+      )}
+
+      <div
+        className="grid"
+        style={{
+          display: "grid",
+          gridTemplateColumns: `repeat(${gridSize}, ${getCellSize()}px)`,
+          gap: "5px",
+          justifyContent: "center",
+        }}
+      >
+        {Array.from({ length: gridSize }).map((_, row) =>
+          Array.from({ length: gridSize }).map((_, col) => {
+            const showBlue = showPattern && isCellInPattern(row, col);
+            const clicked = isCellClicked(row, col);
+            const wasCorrectClick = clicked && pattern.some(([pr, pc]) => pr === row && pc === col);
+            const wasWrongClick = clicked && !wasCorrectClick;
+            const correct = submitted && isCellCorrect(row, col);
+            const incorrect = submitted && isCellIncorrect(row, col);
+            const missed = submitted && isCellMissed(row, col);
+
+            return (
+              <div
+                key={`${row}-${col}`}
+                className={`cell 
+                  ${showBlue ? "pattern" : ""} 
+                  ${wasCorrectClick ? "clicked" : ""} 
+                  ${wasWrongClick ? "wrong" : ""}
+                  ${correct ? "correct" : ""} 
+                  ${incorrect ? "wrong" : ""}
+                  ${missed ? "missed" : ""}
+                `}
+                onClick={() => handleCellClick(row, col)}
+                style={{
+                  width: `${getCellSize()}px`,
+                  height: `${getCellSize()}px`,
+                }}
+              />
+            );
+          })
+        )}
+      </div>
+
+      {levelCompleted && (
+        <button className="next-level-btn" onClick={nextLevel}>
+          Next Level
+        </button>
+      )}
+    </div>
+  );
+};
+
+export default Task1;
+
   

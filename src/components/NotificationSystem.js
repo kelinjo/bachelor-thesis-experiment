@@ -34,7 +34,7 @@ const task3Hints = {
   20: "🧠 Hint: The answer is 6.",
 };
 
-const popSound = new Audio("/notification_audio.mp3"); // 🔥 Add sound (must be in public folder)
+const popSound = new Audio("/notification_audio.mp3");
 
 function NotificationSystem() {
   const [visibleNotifications, setVisibleNotifications] = useState([]);
@@ -70,7 +70,7 @@ function NotificationSystem() {
     const start = localStorage.getItem("experimentStart");
     if (!group || !start) return;
 
-    const groupIntervals = { A: 20, B: 17, C: 12 };
+    const groupIntervals = { A: 20, B: 17, C: 5 };
     const intervalSeconds = groupIntervals[group] || 60;
     let counter = 1;
 
@@ -78,6 +78,7 @@ function NotificationSystem() {
       if (!taskActive) return;
       if (location.pathname === "/summary") return;
       if (location.pathname.includes("instructions")) return;
+      if (localStorage.getItem("dndActivated") === "true") return; // 🛑 Block if DND activated
 
       const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
       const expandMessage = expandMessages[Math.floor(Math.random() * expandMessages.length)];
@@ -101,7 +102,6 @@ function NotificationSystem() {
       logNotification(newNotification);
       startAutoDismissTimer(newNotification.id);
 
-      // 🔥 Play sound
       popSound.currentTime = 0;
       popSound.play();
 
@@ -114,6 +114,7 @@ function NotificationSystem() {
 
   useEffect(() => {
     const handleHintTrigger = (e) => {
+      if (localStorage.getItem("dndActivated") === "true") return; // 🛑 Block hint notifications too
       const level = e.detail;
       let hintText = null;
 
@@ -145,7 +146,6 @@ function NotificationSystem() {
       logNotification(hintNotification);
       startAutoDismissTimer(hintNotification.id);
 
-      // 🔥 Play sound for hints too
       popSound.currentTime = 0;
       popSound.play();
     };
