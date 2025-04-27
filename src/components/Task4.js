@@ -41,20 +41,20 @@ function Task4() {
   useEffect(() => {
     setupGrid(currentLevel);
     setTaskStartTime(Date.now());
-
+  
     intervalRef.current = setInterval(() => {
       setTaskElapsedTime(Date.now() - taskStartTime);
     }, 1000);
-
-    // 🔥 Clear DND at start of Task4
-    localStorage.removeItem("dndActivated");
-
-    // ✅ Task 4 is starting, allow notifications
+  
+    // 🛠 Only clear DND for this task
+    localStorage.removeItem("dndActiveForThisTask");
+  
     const startEvent = new CustomEvent("taskStatus", { detail: "start" });
     window.dispatchEvent(startEvent);
-
+  
     return () => clearInterval(intervalRef.current);
   }, []);
+  
 
   useEffect(() => {
     if (currentLevel > totalLevels) {
@@ -121,10 +121,16 @@ function Task4() {
 
   // 🛑 Handle DND button press
   const handleDND = () => {
-    localStorage.setItem("dndActivated", "true");
+    localStorage.setItem("dndActiveForThisTask", "true");
+  
+    if (!localStorage.getItem("dndPressedOnce")) {
+      localStorage.setItem("dndPressedOnce", "true");
+    }
+  
     const event = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(event);
   };
+  
 
   if (taskCompleted) {
     const formattedTime = formatTime(taskElapsedTime);
@@ -159,12 +165,12 @@ function Task4() {
       </p>
 
       {/* 🛑 DND BUTTON if not already activated */}
-      {localStorage.getItem("dndActivated") !== "true" && (
+      {!localStorage.getItem("dndPressedOnce") && (
         <button
           onClick={handleDND}
           style={{
             position: "fixed",
-            top: "100px",         // ⬅️ Moved down below timer
+            top: "90px",         // ⬅️ Moved down below timer
             right: "20px",       // ⬅️ Same side as timer (right side)
             backgroundColor: "#ff4d4d",
             color: "white",

@@ -78,7 +78,7 @@ function NotificationSystem() {
       if (!taskActive) return;
       if (location.pathname === "/summary") return;
       if (location.pathname.includes("instructions")) return;
-      if (localStorage.getItem("dndActivated") === "true") return; // 🛑 Block if DND activated
+      if (localStorage.getItem("dndActiveForThisTask") === "true") return; // 🛑 Block if DND active for this task
 
       const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
       const expandMessage = expandMessages[Math.floor(Math.random() * expandMessages.length)];
@@ -114,7 +114,7 @@ function NotificationSystem() {
 
   useEffect(() => {
     const handleHintTrigger = (e) => {
-      if (localStorage.getItem("dndActivated") === "true") return; // 🛑 Block hint notifications too
+      if (localStorage.getItem("dndActiveForThisTask") === "true") return; // 🛑 Block hint notifications too
       const level = e.detail;
       let hintText = null;
 

@@ -48,21 +48,24 @@ const Task3 = () => {
 
   useEffect(() => {
     if (!taskCompleted) {
-      // 🔥 Reset DND when starting Task3
+      // 🛠 Reset DND properly
       localStorage.removeItem("dndActivated");
+      localStorage.removeItem("dndActiveForThisTask");
 
       const startEvent = new CustomEvent("taskStatus", { detail: "start" });
       window.dispatchEvent(startEvent);
+
+      const start = Date.now();
+      setStartTime(start);
+
+      intervalRef.current = setInterval(() => {
+        setTaskElapsedTime(Date.now() - start);
+      }, 1000);
+
+      return () => clearInterval(intervalRef.current);
     }
   }, [taskCompleted]);
-
-  useEffect(() => {
-    setStartTime(Date.now());
-    intervalRef.current = setInterval(() => {
-      setTaskElapsedTime(Date.now() - startTime);
-    }, 1000);
-    return () => clearInterval(intervalRef.current);
-  }, []);
+  
 
   useEffect(() => {
     const hintLevels = [5, 12, 20];
@@ -111,10 +114,16 @@ const Task3 = () => {
 
   // 🛑 Handle DND button press
   const handleDND = () => {
-    localStorage.setItem("dndActivated", "true");
+    localStorage.setItem("dndActiveForThisTask", "true");
+  
+    if (!localStorage.getItem("dndPressedOnce")) {
+      localStorage.setItem("dndPressedOnce", "true");
+    }
+  
     const event = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(event);
   };
+  
 
   if (taskCompleted) {
     const endEvent = new CustomEvent("taskStatus", { detail: "end" });
@@ -150,16 +159,16 @@ const Task3 = () => {
           fontWeight: "bold",
         }}
       >
-        ⏱️ Time: {formatTime(taskElapsedTime)}
+        ⏱ Time: {formatTime(taskElapsedTime)}
       </p>
 
       {/* 🛑 DND BUTTON only if not already activated */}
-      {localStorage.getItem("dndActivated") !== "true" && (
+      {!localStorage.getItem("dndPressedOnce") && (
         <button
           onClick={handleDND}
           style={{
             position: "fixed",
-            top: "100px",         // ⬅️ Moved down below timer
+            top: "105px",         // ⬅️ Moved down below timer
             right: "20px",       // ⬅️ Same side as timer (right side)
             backgroundColor: "#ff4d4d",
             color: "white",

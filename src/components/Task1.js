@@ -66,13 +66,17 @@ const Task1 = () => {
   useEffect(() => {
     const start = Date.now();
     setTaskStartTime(start);
-
+  
+    // 🛠 Reset DND for the new task (only for current task)
+    localStorage.removeItem("dndActiveForThisTask");
+  
     intervalRef.current = setInterval(() => {
       setTaskElapsedTime(Date.now() - start);
     }, 1000);
-
+  
     return () => clearInterval(intervalRef.current);
   }, []);
+  
 
   useEffect(() => {
     if (!level) return;
@@ -151,10 +155,17 @@ const Task1 = () => {
 
   // 🛑 Handle DND button press
   const handleDND = () => {
-    localStorage.setItem("dndActivated", "true");
+    localStorage.setItem("dndActiveForThisTask", "true");
+  
+    // 🛠 If first time ever, also mark dndPressedOnce
+    if (!localStorage.getItem("dndPressedOnce")) {
+      localStorage.setItem("dndPressedOnce", "true");
+    }
+  
     const event = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(event);
   };
+  
 
   const isCellInPattern = (r, c) => pattern.some(([pr, pc]) => pr === r && pc === c);
   const isCellClicked = (r, c) => userGrid.some(([ur, uc]) => ur === r && uc === c);
@@ -224,26 +235,27 @@ const Task1 = () => {
       </p>
 
       {/* 🛑 DND BUTTON only if not already activated */}
-      {localStorage.getItem("dndActivated") !== "true" && (
+      {!localStorage.getItem("dndPressedOnce") && (
         <button
-            onClick={handleDND}
-            style={{
-              position: "fixed",
-              top: "100px",         // ⬅️ Moved down below timer
-              right: "20px",       // ⬅️ Same side as timer (right side)
-              backgroundColor: "#ff4d4d",
-              color: "white",
-              border: "none",
-              borderRadius: "8px",
-              padding: "6px 12px",
-              fontWeight: "bold",
-              cursor: "pointer",
-              zIndex: 1000,        // ⬅️ Always above everything
-            }}
-          >
-            🛑 Do Not Disturb
+          onClick={handleDND}
+          style={{
+            position: "fixed",
+            top: "90px",
+            right: "20px",
+            backgroundColor: "#ff4d4d",
+            color: "white",
+            border: "none",
+            borderRadius: "8px",
+            padding: "6px 12px",
+            fontWeight: "bold",
+            cursor: "pointer",
+            zIndex: 1000,
+          }}
+        >
+          🛑 Do Not Disturb
         </button>
       )}
+
 
       <h3>Level {currentLevel}</h3>
 
