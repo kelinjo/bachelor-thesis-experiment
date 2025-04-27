@@ -29,10 +29,12 @@ const task1Hints = {
 };
 
 const task3Hints = {
-  3: "🧮 Hint: Don’t forget your multiplication tables!",
+  5: "🧮 Hint: Don’t forget your multiplication tables!",
   12: "💡 Hint: A square plus a square root — simplify step-by-step.",
   20: "🧠 Hint: Remember PEMDAS — parentheses, exponents, then multiply.",
 };
+
+const popSound = new Audio("/notification_audio.mp3"); // 🔥 Add sound (must be in public folder)
 
 function NotificationSystem() {
   const [visibleNotifications, setVisibleNotifications] = useState([]);
@@ -40,7 +42,7 @@ function NotificationSystem() {
   const originalContentRef = useRef({});
   const expandedContentRef = useRef({});
   const location = useLocation();
-  const [taskActive, setTaskActive] = useState(true); // ✅ NEW
+  const [taskActive, setTaskActive] = useState(true);
 
   const startAutoDismissTimer = (id, duration = 5000) => {
     if (timersRef.current[id]) clearTimeout(timersRef.current[id]);
@@ -55,14 +57,13 @@ function NotificationSystem() {
         setTaskActive(true);
       } else if (e.detail === "end") {
         setTaskActive(false);
-        setVisibleNotifications([]); // ✅ this is the key
+        setVisibleNotifications([]);
       }
     };
-  
+
     window.addEventListener("taskStatus", handleTaskStatus);
     return () => window.removeEventListener("taskStatus", handleTaskStatus);
   }, []);
-  
 
   useEffect(() => {
     const group = localStorage.getItem("group");
@@ -74,7 +75,7 @@ function NotificationSystem() {
     let counter = 1;
 
     const generateNotification = () => {
-      if (!taskActive) return; // ✅ block if task is finished
+      if (!taskActive) return;
       if (location.pathname === "/summary") return;
 
       const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
@@ -99,12 +100,16 @@ function NotificationSystem() {
       logNotification(newNotification);
       startAutoDismissTimer(newNotification.id);
 
+      // 🔥 Play sound
+      popSound.currentTime = 0;
+      popSound.play();
+
       counter++;
     };
 
     const interval = setInterval(generateNotification, intervalSeconds * 1000);
     return () => clearInterval(interval);
-  }, [location.pathname, taskActive]); // ✅ re-run if taskActive changes
+  }, [location.pathname, taskActive]);
 
   useEffect(() => {
     const handleHintTrigger = (e) => {
@@ -138,6 +143,10 @@ function NotificationSystem() {
       ]);
       logNotification(hintNotification);
       startAutoDismissTimer(hintNotification.id);
+
+      // 🔥 Play sound for hints too
+      popSound.currentTime = 0;
+      popSound.play();
     };
 
     window.addEventListener("triggerHint", handleHintTrigger);

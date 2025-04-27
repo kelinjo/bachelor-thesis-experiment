@@ -9,6 +9,20 @@
   pointer-events: none; /* Prevent overlapping interaction */
 }
 
+@keyframes shake {
+  0% { transform: translateX(0); }
+  10% { transform: translateX(-8px); }
+  20% { transform: translateX(8px); }
+  30% { transform: translateX(-6px); }
+  40% { transform: translateX(6px); }
+  50% { transform: translateX(-4px); }
+  60% { transform: translateX(4px); }
+  70% { transform: translateX(-2px); }
+  80% { transform: translateX(2px); }
+  90% { transform: translateX(-1px); }
+  100% { transform: translateX(0); }
+}
+
 .notification-toast {
   background: #f8f9fa;
   border-left: 5px solid #0077cc;
@@ -18,8 +32,10 @@
   max-width: 300px;
   font-family: sans-serif;
   transition: all 0.3s ease-in-out;
-  pointer-events: auto; /* Allow clicking only inside each notification */
+  pointer-events: auto;
+  animation: shake 1.5s ease; /* Longer shaking */
 }
+
 
 .notification-toast.hint {
   background-color: #e8f5e9;
