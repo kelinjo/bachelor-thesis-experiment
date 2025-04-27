@@ -5,177 +5,31 @@ import React, { useEffect, useState, useRef } from "react";
 
 
 const levelPatterns = {
-    1: {
-      pattern: [
-        [0, 1],
-        [1, 2],
-        [2, 1],
-        [3, 3],
-      ],
-      gridSize: 4,
-      allowedErrors: 1,
-    },
-    2: {
-      pattern: [
-        [0, 1],
-        [1, 3],
-        [3, 1],
-        [4, 2],
-        [4, 0], // Updated this — [5,0] was out of 5x5 bounds
-      ],
-      gridSize: 5,
-      allowedErrors: 1,
-    }, 
-    3: {
-      pattern: [
-        [0, 0],
-        [0, 4],
-        [2, 2],
-        [4, 0],
-        [4, 4],
-        [1, 3],
-      ],
-      gridSize: 5,
-      allowedErrors: 1,
-    }, /*
-    
-    4: {
-      pattern: [
-        [0, 0],
-        [0, 4],
-        [1, 2],
-        [2, 1],
-        [3, 3],
-        [4, 0],
-        [4, 4],
-      ],
-      gridSize: 5,
-      allowedErrors: 1,
-    },
-    5: {
-      pattern: [
-        [0, 1],
-        [1, 2],
-        [2, 1],
-        [3, 3],
-        [4, 0],
-        [4, 2],
-        [4, 4],
-        [3, 2],
-      ],
-      gridSize: 5,
-      allowedErrors: 1,
-    },
-    6: {
-      pattern: [
-        [0, 1],
-        [1, 3],
-        [2, 2],
-        [3, 0],
-        [3, 4],
-        [4, 2],
-        [4, 3],
-      ],
-      gridSize: 6,
-      allowedErrors: 1,
-    },
-    7: {
-      pattern: [
-        [0, 0],
-        [0, 4],
-        [1, 1],
-        [2, 3],
-        [3, 1],
-        [3, 4],
-        [4, 0],
-        [4, 5],
-      ],
-      gridSize: 6,
-      allowedErrors: 2,
-    },
-    8: {
-      pattern: [
-        [0, 1],
-        [1, 2],
-        [2, 0],
-        [3, 3],
-        [4, 1],
-        [4, 4],
-        [5, 0],
-        [5, 5],
-        [3, 2],
-      ],
-      gridSize: 6,
-      allowedErrors: 2,
-    }, 
-    9: {
-      pattern: [
-        [0, 0],
-        [1, 4],
-        [2, 2],
-        [3, 5],
-        [4, 1],
-        [4, 3],
-        [5, 0],
-        [5, 5],
-        [6, 2],
-        [6, 4],
-      ],
-      gridSize: 6,
-      allowedErrors: 2,
-    },
-    10: {
-        pattern: [
-          [0, 2],
-          [1, 4],
-          [2, 1],
-          [3, 3],
-          [4, 5],
-          [5, 2],
-          [2, 4],
-          [3, 1],
-          [4, 0],
-          [5, 5],
-        ],
-        gridSize: 6,
-        allowedErrors: 2,
-      },
-      11: {
-        pattern: [
-          [0, 3],
-          [1, 0],
-          [2, 5],
-          [3, 2],
-          [4, 1],
-          [5, 4],
-          [1, 2],
-          [2, 3],
-          [3, 5],
-          [4, 0],
-        ],
-        gridSize: 7,
-        allowedErrors: 3,
-      },
-      12: {
-        pattern: [
-          [0, 1],
-          [1, 5],
-          [2, 0],
-          [3, 4],
-          [4, 2],
-          [5, 6],
-          [2, 5],
-          [3, 0],
-          [4, 3],
-          [5, 1],
-          [6, 4],
-        ],
-        gridSize: 7,
-        allowedErrors: 3,
-      },
-    
-    */
-  };
+  1: { pattern: [[0, 1], [1, 2], [2, 1], [3, 3]], gridSize: 4, allowedErrors: 1 },
+  2: { pattern: [[0, 1], [1, 3], [3, 1], [4, 2], [4, 0]], gridSize: 5, allowedErrors: 1 },
+  3: { pattern: [[0, 0], [0, 4], [2, 2], [4, 0], [4, 4], [1, 3]], gridSize: 5, allowedErrors: 1 },
+  4: { pattern: [[0, 0], [0, 4], [1, 2], [2, 1], [3, 3], [4, 0], [4, 4]], gridSize: 5, allowedErrors: 1 },
+  5: { pattern: [[0, 1], [1, 2], [2, 1], [3, 3], [4, 0], [4, 2], [4, 4], [3, 2]], gridSize: 5, allowedErrors: 1 },
+  6: { pattern: [[0, 1], [1, 3], [2, 2], [3, 0], [3, 4], [4, 2], [4, 3]], gridSize: 6, allowedErrors: 1 },
+  7: { pattern: [[0, 0], [0, 4], [1, 1], [2, 3], [3, 1], [3, 4], [4, 0], [4, 5]], gridSize: 6, allowedErrors: 2 },
+  8: { pattern: [[0, 1], [1, 2], [2, 0], [3, 3], [4, 1], [4, 4], [5, 0], [5, 5], [3, 2]], gridSize: 6, allowedErrors: 2 },
+  9: { pattern: [[0, 0], [1, 4], [2, 2], [3, 5], [4, 1], [4, 3], [5, 0], [5, 5], [6, 2], [6, 4]], gridSize: 6, allowedErrors: 2 },
+  10: { pattern: [[0, 2], [1, 4], [2, 1], [3, 3], [4, 5], [5, 2], [2, 4], [3, 1], [4, 0], [5, 5]], gridSize: 6, allowedErrors: 2 },
+  11: { pattern: [[0, 3], [1, 0], [2, 5], [3, 2], [4, 1], [5, 4], [1, 2], [2, 3], [3, 5], [4, 0]], gridSize: 7, allowedErrors: 3 },
+  12: { pattern: [[0, 1], [1, 5], [2, 0], [3, 4], [4, 2], [5, 6], [2, 5], [3, 0], [4, 3], [5, 1], [6, 4]], gridSize: 7, allowedErrors: 3 },
+
+  // Modified 13, 14, 15
+  13: { pattern: [[0, 2], [1, 5], [2, 1], [3, 6], [4, 3], [5, 0], [5, 5], [6, 2], [0, 5], [2, 4], [4, 6]], gridSize: 7, allowedErrors: 3 },
+  14: { pattern: [[0, 1], [1, 3], [2, 5], [3, 2], [4, 4], [5, 1], [6, 3], [6, 5], [0, 6], [1, 1], [2, 3], [5, 6]], gridSize: 7, allowedErrors: 3 },
+  15: { pattern: [[0, 0], [0, 6], [1, 2], [2, 4], [3, 1], [4, 5], [5, 3], [6, 0], [6, 6], [2, 1], [3, 5], [4, 2], [5, 1], [5, 5]], gridSize: 7, allowedErrors: 4 },
+
+  // Added 16, 17, 18
+  16: { pattern: [[0, 1], [0, 4], [1, 2], [1, 5], [2, 0], [2, 3], [3, 1], [3, 4], [4, 0], [4, 3], [5, 2], [5, 5], [6, 1], [6, 4], [6, 6]], gridSize: 7, allowedErrors: 4 },
+  17: { pattern: [[0, 0], [0, 3], [0, 6], [1, 2], [2, 5], [3, 1], [3, 3], [3, 5], [4, 0], [4, 4], [5, 2], [5, 5], [6, 1], [6, 3], [6, 6]], gridSize: 7, allowedErrors: 4 },
+  18: { pattern: [[0, 1], [0, 5], [1, 3], [1, 6], [2, 0], [2, 2], [2, 4], [3, 1], [3, 5], [4, 3], [4, 6], [5, 0], [5, 2], [5, 4], [6, 1], [6, 5]], gridSize: 7, allowedErrors: 4 },
+
+};
+
 
   const Task1 = () => {
     const [currentLevel, setCurrentLevel] = useState(1);
@@ -236,7 +90,7 @@ const levelPatterns = {
     useEffect(() => {
       localStorage.setItem("currentLevel", currentLevel);
     
-      const hintLevels = [3, 7, 11]; // the levels that trigger hints
+      const hintLevels = [3, 10, 16]; // the levels that trigger hints
       if (hintLevels.includes(currentLevel)) {
         const event = new CustomEvent("triggerHint", { detail: currentLevel });
         window.dispatchEvent(event);

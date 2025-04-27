@@ -1,9 +1,11 @@
+// src/components/SummaryPage.js
 import React, { useEffect, useState } from "react";
 
 function SummaryPage() {
   const [task1Data, setTask1Data] = useState(null);
   const [task2Data, setTask2Data] = useState(null);
-  const [task3Data, setTask3Data] = useState(null); // ✅ Added task3Data
+  const [task3Data, setTask3Data] = useState(null);
+  const [task4Data, setTask4Data] = useState(null); // ✅ NEW
   const [experimentDuration, setExperimentDuration] = useState(null);
   const [group, setGroup] = useState(null);
   const [notificationLog, setNotificationLog] = useState([]);
@@ -11,14 +13,16 @@ function SummaryPage() {
   useEffect(() => {
     const storedTask1 = localStorage.getItem("task1Results");
     const storedTask2 = localStorage.getItem("task2Results");
-    const storedTask3 = localStorage.getItem("task3Results"); // ✅ Fetch task3 results
+    const storedTask3 = localStorage.getItem("task3Results");
+    const storedTask4 = localStorage.getItem("task4Results"); // ✅ Fetch task4 results
     const start = localStorage.getItem("experimentStart");
     const groupValue = localStorage.getItem("group");
     const log = localStorage.getItem("notificationLog");
 
     if (storedTask1) setTask1Data(JSON.parse(storedTask1));
     if (storedTask2) setTask2Data(JSON.parse(storedTask2));
-    if (storedTask3) setTask3Data(JSON.parse(storedTask3)); // ✅ Save task3Data
+    if (storedTask3) setTask3Data(JSON.parse(storedTask3));
+    if (storedTask4) setTask4Data(JSON.parse(storedTask4)); // ✅ Save task4Data
     if (groupValue) setGroup(groupValue);
     if (log) setNotificationLog(JSON.parse(log));
 
@@ -46,6 +50,7 @@ function SummaryPage() {
         "Task3 Time",
         "Task3 Accuracy (%)",
         "Task3 Correct/Total",
+        "Task4 Time",
       ],
       [
         group || "N/A",
@@ -56,9 +61,10 @@ function SummaryPage() {
         task2Data?.time || "N/A",
         task2Data?.moves || "N/A",
         task2Data?.efficiency || "N/A",
-        task3Data?.time || "N/A", // ✅ Added for task3
+        task3Data?.time || "N/A",
         task3Data?.accuracy || "N/A",
         task3Data ? `"'${task3Data.correct}/${task3Data.total}'"` : "N/A",
+        task4Data?.time || "N/A", // ✅ Added Task 4 time
       ],
       [],
       ["Notification Log:"],
@@ -124,6 +130,13 @@ function SummaryPage() {
             <strong>{task3Data.total}</strong>
           </p>
           <p>📊 Final Accuracy: <strong>{task3Data.accuracy}%</strong></p>
+        </div>
+      )}
+
+      {task4Data && (
+        <div style={{ marginTop: "2rem" }}>
+          <h3>🧐 Task 4: Odd-One-Out</h3>
+          <p>⏱️ Total Time: <strong>{task4Data.time}</strong></p>
         </div>
       )}
 

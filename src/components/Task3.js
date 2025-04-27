@@ -4,27 +4,38 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Task3.css";
 
 const mathLevels = {
-  1: { question: "2 + 2 = ?", options: [3, 4, 5, 6], correct: 4 },
-  2: { question: "10 - 3 = ?", options: [6, 7, 8, 9], correct: 7 },
-  3: { question: "3 × 4 = ?", options: [7, 12, 11, 14], correct: 12 },
-  4: { question: "16 ÷ 2 = ?", options: [6, 7, 8, 9], correct: 8 },
-  5: { question: "√49 = ?", options: [5, 6, 7, 8], correct: 7 },
-  6: { question: "12 + 4 × 2 = ?", options: [20, 18, 16, 22], correct: 20 },
-  7: { question: "15 ÷ (3 × 1) = ?", options: [3, 5, 6, 7], correct: 5 },
-  8: { question: "x + 4 = 10. Solve x.", options: [5, 6, 7, 8], correct: 6 },
-  9: { question: "√(64) ÷ 2 = ?", options: [2, 4, 6, 8], correct: 4 },
-  10: { question: "(5 × 2) + 3 = ?", options: [13, 11, 12, 10], correct: 13 },
-  11: { question: "9 + 6 ÷ 3 = ?", options: [11, 13, 15, 17], correct: 11 },
-  12: { question: "3² + √16 = ?", options: [11, 12, 13, 14], correct: 13 },
-  13: { question: "Solve: x/2 = 6", options: [10, 12, 13, 14], correct: 12 },
-  14: { question: "Simplify: (3 + 5) × 2", options: [14, 15, 16, 17], correct: 16 },
-  15: { question: "Solve: x - 3 = 4", options: [5, 6, 7, 8], correct: 7 },
-  16: { question: "What is 1/2 of 36?", options: [16, 17, 18, 19], correct: 18 },
-  17: { question: "x = 10. What is x²?", options: [100, 90, 80, 70], correct: 100 },
-  18: { question: "Solve: 2(x + 3) = 14", options: [5, 6, 7, 8], correct: 4 },
-  19: { question: "What is the average of 10, 15, and 25?", options: [15, 16.6, 18, 20], correct: 16.6 },
-  20: { question: "Solve: (√81 + 5) × 2", options: [26, 28, 30, 32], correct: 28 },
+  1: { question: "8 + 7 - 5 = ?", options: [9, 10, 11, 12], correct: 10 },
+  2: { question: "15 ÷ 3 + 2 = ?", options: [6, 7, 8, 9], correct: 7 },
+  3: { question: "2² + 5 = ?", options: [8, 9, 10, 11], correct: 9 },
+  4: { question: "6 × (2 + 3) = ?", options: [24, 28, 30, 36], correct: 30 },
+  5: { question: "√49 + 3 = ?", options: [8, 9, 10, 11], correct: 10 },
+  6: { question: "5² - 4² = ?", options: [9, 11, 13, 15], correct: 9 },
+  7: { question: "18 ÷ (3 + 3) = ?", options: [2, 3, 4, 5], correct: 3 },
+  8: { question: "7 + (6 × 2) = ?", options: [17, 18, 19, 20], correct: 19 },
+  9: { question: "(15 + 5) ÷ 4 = ?", options: [4, 5, 6, 7], correct: 5 },
+  10: { question: "√(81) ÷ 3 = ?", options: [2, 3, 4, 5], correct: 3 },
+  11: { question: "8² ÷ 16 = ?", options: [2, 3, 4, 5], correct: 4 },
+  12: { question: "(9 × 2) - 7 = ?", options: [10, 11, 12, 13], correct: 11 },
+  13: { question: "(5 + 8) × 2 = ?", options: [24, 25, 26, 27], correct: 26 },
+  14: { question: "√(100) + 12 = ?", options: [20, 21, 22, 23], correct: 22 },
+  15: { question: "36 ÷ 6 + 7 = ?", options: [11, 12, 13, 14], correct: 13 },
+  16: { question: "7² ÷ 7 = ?", options: [5, 6, 7, 8], correct: 7 },
+  17: { question: "3³ ÷ 3 = ?", options: [7, 8, 9, 10], correct: 9 },
+  18: { question: "6 × (4 + 2) = ?", options: [30, 32, 34, 36], correct: 36 },
+  19: { question: "(15 ÷ 3) + (8 ÷ 2) = ?", options: [8, 9, 10, 11], correct: 9 },
+  20: { question: "√(144) ÷ 2 = ?", options: [5, 6, 7, 8], correct: 6 },
+  21: { question: "x = 5. Find 2x + 3.", options: [11, 12, 13, 14], correct: 13 },
+  22: { question: "√(25) + √(16) = ?", options: [8, 9, 10, 11], correct: 9 },
+  23: { question: "20% of 50 = ?", options: [8, 9, 10, 11], correct: 10 },
+  24: { question: "Average of 8, 10, 12?", options: [9, 10, 11, 12], correct: 10 },
+  25: { question: "Solve: (6² ÷ 4) + 2", options: [10, 11, 12, 13], correct: 11 },
+  26: { question: "(9 + 6) × 2 ÷ 5 = ?", options: [5, 6, 7, 8], correct: 6 },
+  27: { question: "(3³ + 1) ÷ 4 = ?", options: [7, 8, 9, 10], correct: 7 },
+  28: { question: "x = 9. What is (x × 2) - 5?", options: [11, 12, 13, 14], correct: 13 },
+  29: { question: "Solve: (5 × 6) ÷ (2 + 1)", options: [9, 10, 11, 12], correct: 10 },
+  30: { question: "(8² - 4²) ÷ 6 = ?", options: [10, 12, 14, 16], correct: 10 },
 };
+
 
 const Task3 = () => {
   const navigate = useNavigate();
@@ -41,7 +52,6 @@ const Task3 = () => {
       window.dispatchEvent(startEvent);
     }
   }, [taskCompleted]);
-  
 
   useEffect(() => {
     setStartTime(Date.now());
@@ -52,7 +62,7 @@ const Task3 = () => {
   }, []);
 
   useEffect(() => {
-    const hintLevels = [3, 12, 20];
+    const hintLevels = [5, 12, 20];
     if (hintLevels.includes(currentLevel)) {
       const event = new CustomEvent("triggerHint", { detail: currentLevel });
       window.dispatchEvent(event);
@@ -65,12 +75,13 @@ const Task3 = () => {
 
     setAnswers((prev) => [...prev, { level: currentLevel, selected, correct }]);
 
-    if (currentLevel < 20) {
+    if (currentLevel < Object.keys(mathLevels).length) { 
+      // ✅ Correct: don't hardcode 20, use actual number of questions
       setCurrentLevel((prev) => prev + 1);
     } else {
       clearInterval(intervalRef.current);
       const totalCorrect = answers.filter((a) => a.correct).length + (correct ? 1 : 0);
-      const accuracyPercent = ((totalCorrect / 20) * 100).toFixed(1);
+      const accuracyPercent = ((totalCorrect / Object.keys(mathLevels).length) * 100).toFixed(1);
       const formattedTime = formatTime(Date.now() - startTime);
 
       localStorage.setItem(
@@ -78,12 +89,12 @@ const Task3 = () => {
         JSON.stringify({
           time: formattedTime,
           correct: totalCorrect,
-          total: 20,
+          total: Object.keys(mathLevels).length,
           accuracy: accuracyPercent,
         })
       );
 
-      setTaskCompleted(true); // ✅ go to end screen instead of summary immediately
+      setTaskCompleted(true);
     }
   };
 
@@ -96,28 +107,26 @@ const Task3 = () => {
 
   const question = mathLevels[currentLevel];
 
-  // ✅ Task 3 End Screen
   if (taskCompleted) {
     const endEvent = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(endEvent);
 
     const totalCorrect = answers.filter((a) => a.correct).length;
-    const accuracyPercent = ((totalCorrect / 20) * 100).toFixed(1);
+    const accuracyPercent = ((totalCorrect / Object.keys(mathLevels).length) * 100).toFixed(1);
     const formattedTime = formatTime(taskElapsedTime);
 
     return (
       <div className="task3-container">
         <h2>🎉 Task 3 Complete!</h2>
-        <p>You've completed all 20 math questions!</p>
+        <p>You've completed all {Object.keys(mathLevels).length} math questions!</p>
         <p>Total Task Time: {formattedTime}</p>
-        <p>You answered {totalCorrect} out of 20 questions correctly.</p>
+        <p>You answered {totalCorrect} out of {Object.keys(mathLevels).length} questions correctly.</p>
         <p>Accuracy: <strong>{accuracyPercent}%</strong></p>
-        <button onClick={() => navigate("/summary")}>Proceed to Summary</button>
+        <button onClick={() => navigate("/task4-instructions")}>Next Task</button>
       </div>
     );
   }
 
-  // 🔥 Normal Game Screen (still solving)
   return (
     <div className="task3-container">
       <p
@@ -135,9 +144,9 @@ const Task3 = () => {
       </p>
 
       <h2>🧮 Level {currentLevel}</h2>
-      <p>{question.question}</p>
+      <p>{question?.question}</p>
       <div className="options">
-        {question.options.map((opt, idx) => (
+        {question?.options.map((opt, idx) => (
           <button key={idx} onClick={() => handleAnswer(opt)}>
             {opt}
           </button>

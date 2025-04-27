@@ -23,9 +23,9 @@ const expandMessages = [
 ];
 
 const task1Hints = {
-  3: "🔍 Hint: This pattern is symmetrical.",
-  7: "🧠 Hint: Focus on the corners first.",
-  11: "👁️ Hint: It forms a diagonal line.",
+  3: "🔍 Hint: Pick all the corners.",
+  10: "🧠 Hint: Focus on the corners first.",
+  16: "👁️ Hint: It forms a diagonal line.",
 };
 
 const task3Hints = {

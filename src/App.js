@@ -6,12 +6,18 @@ import Task2Instructions from "./components/Task2Instructions";
 import Task2 from "./components/Task2";
 import Task3Instructions from "./components/Task3Instructions"; // ✅ important
 import Task3 from "./components/Task3"; // ✅ important
+import Task4Instructions from "./components/Task4Instructions"; // ✅ important
+import Task4 from "./components/Task4"; // ✅ important
 import SummaryPage from "./components/SummaryPage";
 import GlobalTimer from "./components/GlobalTimer";
 import NotificationSystem from "./components/NotificationSystem";
 
 function App() {
+
+  console.log(Task4);
+
   return (
+    
     <Router>
       <GlobalTimer />
       <NotificationSystem />
@@ -23,6 +29,8 @@ function App() {
         <Route path="/task2" element={<Task2 />} />
         <Route path="/task3-instructions" element={<Task3Instructions />} /> {/* ✅ */}
         <Route path="/task3" element={<Task3 />} /> {/* ✅ */}
+        <Route path="/task4-instructions" element={<Task4Instructions />} /> {/* ✅ */}
+        <Route path="/task4" element={<Task4 />} /> {/* ✅ */}
         <Route path="/summary" element={<SummaryPage />} />
       </Routes>
     </Router>
