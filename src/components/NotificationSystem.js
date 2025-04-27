@@ -24,14 +24,14 @@ const expandMessages = [
 
 const task1Hints = {
   3: "🔍 Hint: Pick all the corners.",
-  10: "🧠 Hint: Focus on the corners first.",
-  16: "👁️ Hint: It forms a diagonal line.",
+  10: "🧠 Hint: R1 C3 and R6 C3.",
+  16: "👁️ Hint: First column the cells are on R3 and R5.",
 };
 
 const task3Hints = {
-  5: "🧮 Hint: Don’t forget your multiplication tables!",
-  12: "💡 Hint: A square plus a square root — simplify step-by-step.",
-  20: "🧠 Hint: Remember PEMDAS — parentheses, exponents, then multiply.",
+  5: "🧮 Hint: The answer is 10.",
+  12: "💡 Hint: The answer is 11.",
+  20: "🧠 Hint: The answer is 6.",
 };
 
 const popSound = new Audio("/notification_audio.mp3"); // 🔥 Add sound (must be in public folder)
@@ -44,7 +44,7 @@ function NotificationSystem() {
   const location = useLocation();
   const [taskActive, setTaskActive] = useState(true);
 
-  const startAutoDismissTimer = (id, duration = 5000) => {
+  const startAutoDismissTimer = (id, duration = 6000) => {
     if (timersRef.current[id]) clearTimeout(timersRef.current[id]);
     timersRef.current[id] = setTimeout(() => {
       setVisibleNotifications((prev) => prev.filter((n) => n.id !== id));
@@ -70,7 +70,7 @@ function NotificationSystem() {
     const start = localStorage.getItem("experimentStart");
     if (!group || !start) return;
 
-    const groupIntervals = { A: 30, B: 25, C: 10 };
+    const groupIntervals = { A: 30, B: 25, C: 12 };
     const intervalSeconds = groupIntervals[group] || 60;
     let counter = 1;
 

@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Task2.css";
 
 const levels = {
-  1: { diskCount: 3, pegCount: 3 }, /*
-  2: { diskCount: 4, pegCount: 3 }, */
+  1: { diskCount: 3, pegCount: 3 }, 
+  2: { diskCount: 4, pegCount: 3 }, 
 };
 
 function Task2() {

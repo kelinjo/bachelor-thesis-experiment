@@ -32,11 +32,12 @@ function LandingPage() {
           <p>
             Throughout the experiment, you'll receive notifications at different intervals depending on the group you’re assigned to.
             These notifications may include distractions—or even helpful hints—but you won’t know which until you engage with them.
+            The notifications will dissapear after 6 seconds of no interaction.
           </p>
 
           <p>
             Your performance, speed, and interaction with notifications will be recorded for analysis.
-            The entire experiment takes approximately <strong>25–30 minutes</strong> to complete.
+            The entire experiment takes approximately <strong>15 minutes</strong> to complete.
           </p>
 
           <p className="warning">

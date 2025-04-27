@@ -29,9 +29,8 @@ function Task3Instructions() {
       <h3>📊 What We Measure</h3>
       <ul>
         <li>⏱️ How long you take to complete the full task</li>
-        <li>⏳ Time spent per question (to analyze hesitation/difficulty)</li>
         <li>✅ How many correct answers you get</li>
-        <li>📉 Accuracy and response speed across all 20 questions</li>
+        <li>📉 Accuracy and speed across all 30 questions</li>
       </ul>
 
       <p>
