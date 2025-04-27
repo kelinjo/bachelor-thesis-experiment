@@ -7,7 +7,7 @@ import React, { useEffect, useState, useRef } from "react";
 const levelPatterns = {
   1: { pattern: [[0, 1], [1, 2], [2, 1], [3, 3]], gridSize: 4, allowedErrors: 1 },
   2: { pattern: [[0, 1], [1, 3], [3, 1], [4, 2], [4, 0]], gridSize: 5, allowedErrors: 1 },
-  3: { pattern: [[0, 0], [0, 4], [2, 2], [4, 0], [4, 4], [1, 3]], gridSize: 5, allowedErrors: 1 },
+  3: { pattern: [[0, 0], [0, 4], [2, 2], [4, 0], [4, 4], [1, 3]], gridSize: 5, allowedErrors: 1 }, /*
   4: { pattern: [[0, 0], [0, 4], [1, 2], [2, 1], [3, 3], [4, 0], [4, 4]], gridSize: 5, allowedErrors: 1 },
   5: { pattern: [[0, 1], [1, 2], [2, 1], [3, 3], [4, 0], [4, 2], [4, 4], [3, 2]], gridSize: 5, allowedErrors: 1 },
   6: { pattern: [[0, 1], [1, 3], [2, 2], [3, 0], [3, 4], [4, 2], [4, 3]], gridSize: 6, allowedErrors: 1 },
@@ -27,7 +27,7 @@ const levelPatterns = {
   16: { pattern: [[0, 1], [0, 4], [1, 2], [1, 5], [2, 0], [2, 3], [3, 1], [3, 4], [4, 0], [4, 3], [5, 2], [5, 5], [6, 1], [6, 4], [6, 6]], gridSize: 7, allowedErrors: 4 },
   17: { pattern: [[0, 0], [0, 3], [0, 6], [1, 2], [2, 5], [3, 1], [3, 3], [3, 5], [4, 0], [4, 4], [5, 2], [5, 5], [6, 1], [6, 3], [6, 6]], gridSize: 7, allowedErrors: 4 },
   18: { pattern: [[0, 1], [0, 5], [1, 3], [1, 6], [2, 0], [2, 2], [2, 4], [3, 1], [3, 5], [4, 3], [4, 6], [5, 0], [5, 2], [5, 4], [6, 1], [6, 5]], gridSize: 7, allowedErrors: 4 },
-
+*/
 };
 
 

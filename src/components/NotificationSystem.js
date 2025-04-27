@@ -70,13 +70,14 @@ function NotificationSystem() {
     const start = localStorage.getItem("experimentStart");
     if (!group || !start) return;
 
-    const groupIntervals = { A: 30, B: 25, C: 12 };
+    const groupIntervals = { A: 20, B: 17, C: 12 };
     const intervalSeconds = groupIntervals[group] || 60;
     let counter = 1;
 
     const generateNotification = () => {
       if (!taskActive) return;
       if (location.pathname === "/summary") return;
+      if (location.pathname.includes("instructions")) return;
 
       const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
       const expandMessage = expandMessages[Math.floor(Math.random() * expandMessages.length)];
