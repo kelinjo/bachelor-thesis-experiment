@@ -12,7 +12,15 @@ const distractionMessages = [
   "🕵️ Someone is watching your progress closely.",
   "⏳ Don't ignore this alert. Or do.",
   "🧩 A pattern may be forming. Or maybe not.",
+  "🔔 Reminder: Distractions are just a click away.",
+  "🧠 Brain teaser incoming... maybe.",
+  "📲 A new buzz... but is it worth it?",
+  "⚠️ Attention shift detected!",
+  "📢 Another alert – maybe urgent, maybe not.",
+  "🕵️ Hidden clues are everywhere. Or nowhere.",
+  "⏳ Time’s ticking... but don't rush.",
 ];
+
 
 const expandMessages = [
   "Still here? Maybe this one didn’t help. Try focusing on the next pattern.",
@@ -20,13 +28,45 @@ const expandMessages = [
   "Nothing helpful here. Or was there? Keep your head in the game.",
   "You've got this — distractions can wait.",
   "A little curiosity never hurt… but don’t fall behind 😉",
+  "Focus is your best friend right now. Don't lose it!",
+  "Not every click is a reward... stay alert.",
+  "Was that a real hint? Or just noise?",
+  "Curiosity is powerful — but so is concentration.",
+  "Distractions are easy. Winning is harder. Keep going!",
+  "That one wasn't it. Keep your eyes on the real goal.",
+  "Small moments of focus build big results. Stay sharp!",
 ];
+
 
 const task1Hints = {
   3: "🔍 Hint: Pick all the corners.",
-  10: "🧠 Hint: R1 C3 and R6 C3.",
-  16: "👁️ Hint: First column the cells are on R3 and R5.",
+
+  10: `
+    🧠 Hint: Here's a visual clue for Level 10:
+    0 0 x 0 0 0
+    0 0 0 0 x 0
+    0 x 0 0 x 0
+    0 x 0 x 0 0
+    x 0 0 0 0 x
+    0 0 0 0 0 0
+
+    (🖼️ 'x' shows some important pattern cells!)
+      `.trim(),
+
+      16: `
+    👁️ Hint: Here's a visual clue for Level 16:
+    0 x 0 0 x 0 0
+    0 0 x 0 0 x 0
+    x 0 0 x 0 0 0
+    0 x 0 0 x 0 0
+    x 0 0 x 0 0 0
+    0 0 x 0 0 x 0
+    0 x 0 x 0 x 0
+
+    (👀 Focus on where 'x' appears!)
+      `.trim(),
 };
+
 
 const task3Hints = {
   5: "🧮 Hint: The answer is 10.",

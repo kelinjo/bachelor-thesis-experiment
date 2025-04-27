@@ -5,16 +5,17 @@ function SummaryPage() {
   const [task1Data, setTask1Data] = useState(null);
   const [task2Data, setTask2Data] = useState(null);
   const [task3Data, setTask3Data] = useState(null);
-  const [task4Data, setTask4Data] = useState(null); // ✅ NEW
+  const [task4Data, setTask4Data] = useState(null);
   const [experimentDuration, setExperimentDuration] = useState(null);
   const [group, setGroup] = useState(null);
   const [notificationLog, setNotificationLog] = useState([]);
+  const [dndPressedTask, setDndPressedTask] = useState("No");
 
   useEffect(() => {
     const storedTask1 = localStorage.getItem("task1Results");
     const storedTask2 = localStorage.getItem("task2Results");
     const storedTask3 = localStorage.getItem("task3Results");
-    const storedTask4 = localStorage.getItem("task4Results"); // ✅ Fetch task4 results
+    const storedTask4 = localStorage.getItem("task4Results");
     const start = localStorage.getItem("experimentStart");
     const groupValue = localStorage.getItem("group");
     const log = localStorage.getItem("notificationLog");
@@ -22,9 +23,14 @@ function SummaryPage() {
     if (storedTask1) setTask1Data(JSON.parse(storedTask1));
     if (storedTask2) setTask2Data(JSON.parse(storedTask2));
     if (storedTask3) setTask3Data(JSON.parse(storedTask3));
-    if (storedTask4) setTask4Data(JSON.parse(storedTask4)); // ✅ Save task4Data
+    if (storedTask4) setTask4Data(JSON.parse(storedTask4));
     if (groupValue) setGroup(groupValue);
     if (log) setNotificationLog(JSON.parse(log));
+
+    // 🔥 Detect if DND was pressed and in which task
+    if (localStorage.getItem("dndTaskPressed")) {
+      setDndPressedTask(localStorage.getItem("dndTaskPressed"));
+    }
 
     if (start) {
       const now = Date.now();
@@ -40,6 +46,7 @@ function SummaryPage() {
     const results = [
       [
         "Group",
+        "DND Pressed (Task)",
         "Experiment Duration",
         "Task1 Time",
         "Task1 Accuracy (%)",
@@ -54,6 +61,7 @@ function SummaryPage() {
       ],
       [
         group || "N/A",
+        dndPressedTask || "No",
         experimentDuration || "N/A",
         task1Data?.time || "N/A",
         task1Data?.accuracy || "N/A",
@@ -64,7 +72,7 @@ function SummaryPage() {
         task3Data?.time || "N/A",
         task3Data?.accuracy || "N/A",
         task3Data ? `"'${task3Data.correct}/${task3Data.total}'"` : "N/A",
-        task4Data?.time || "N/A", // ✅ Added Task 4 time
+        task4Data?.time || "N/A",
       ],
       [],
       ["Notification Log:"],
@@ -99,6 +107,9 @@ function SummaryPage() {
       {experimentDuration && (
         <p><strong>Total Experiment Duration:</strong> {experimentDuration}</p>
       )}
+
+      {/* ✅ Show DND pressed info */}
+      <p><strong>DND Pressed:</strong> {dndPressedTask !== "No" ? `Yes (during ${dndPressedTask})` : "No"}</p>
 
       {task1Data && (
         <div style={{ marginTop: "2rem" }}>

@@ -33,7 +33,7 @@ const mathLevels = {
   27: { question: "(3³ + 1) ÷ 4 = ?", options: [7, 8, 9, 10], correct: 7 },
   28: { question: "x = 9. What is (x × 2) - 5?", options: [11, 12, 13, 14], correct: 13 },
   29: { question: "Solve: (5 × 6) ÷ (2 + 1)", options: [9, 10, 11, 12], correct: 10 },
-  30: { question: "(8² - 4²) ÷ 6 = ?", options: [10, 12, 14, 16], correct: 10 },
+  30: { question: "(8² - 4²) ÷ 6 = ?", options: [8, 12, 14, 16], correct: 8 },
 };
 
 
@@ -168,7 +168,7 @@ const Task3 = () => {
           onClick={handleDND}
           style={{
             position: "fixed",
-            top: "105px",         // ⬅️ Moved down below timer
+            top: "85px",         // ⬅️ Moved down below timer
             right: "20px",       // ⬅️ Same side as timer (right side)
             backgroundColor: "#ff4d4d",
             color: "white",
