@@ -32,17 +32,25 @@ function LandingPage() {
           <p>
             Throughout the experiment, you'll receive notifications at different intervals depending on the group you’re assigned to.
             These notifications may include distractions—or even helpful hints—but you won’t know which until you engage (click) with them.
-            The notifications will dissapear after <strong>6 seconds</strong> seconds of no interaction, so keep that in mind.
+            The notifications will dissapear after <strong>6 seconds</strong> seconds of no interaction, so keep that in mind when interacting with hints.
           </p>
 
           <p>
-            Your <strong>accuracy</strong>, <strong>speed</strong>, and <strong>interactions</strong> with notifications will be recorded for analysis.
+            At any time during the experiment, you will have the option to activate <strong>Do Not Disturb (DND)</strong> mode.
+            Pressing the <strong>🛑 Do Not Disturb</strong> button will immediately stop new notifications from appearing for the rest of the current task and
+            the notifications will continue at the next task.
+            You can use this option if you find the interruptions too distracting — but it will be recorded and make sure to use it wisely since it can olny be used <strong>1</strong> time!
+          </p>
+
+
+          <p>
+            Your <strong>accuracy</strong>, <strong>speed</strong> and <strong>interactions</strong> with notifications and DND will be recorded for analysis.
             The entire experiment takes approximately <strong>15-20 minutes</strong> to complete.
           </p>
 
           <p className="warning">
             ⚠️ <strong>Once you choose your group below, the global experiment timer will begin.</strong><br />
-            Make sure you're ready and free from interruptions.
+            Make sure you're ready, focused and free from interruptions, also keep the volume at least 50%.
         </p>
 
         <div className="button-group" style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "center", marginTop: "1rem" }}>
