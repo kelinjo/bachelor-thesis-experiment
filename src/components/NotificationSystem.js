@@ -48,7 +48,7 @@ const task1Hints = {
     0 x 0 0 x 0
     0 x 0 x 0 0
     x 0 0 0 0 x
-    0 0 0 0 0 0
+    0 0 x 0 0 x
 
     (🖼️ 'x' shows some important pattern cells!)
       `.trim(),
@@ -61,7 +61,7 @@ const task1Hints = {
     0 x 0 0 x 0 0
     x 0 0 x 0 0 0
     0 0 x 0 0 x 0
-    0 x 0 x 0 x 0
+    0 x 0 0 x 0 x
 
     (👀 Focus on where 'x' appears!)
       `.trim(),
