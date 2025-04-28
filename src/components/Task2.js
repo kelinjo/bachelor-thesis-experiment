@@ -4,8 +4,8 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Task2.css";
 
 const levels = {
-  1: { diskCount: 3, pegCount: 3 }, /*
-  2: { diskCount: 4, pegCount: 3 }, */
+  1: { diskCount: 3, pegCount: 3 }, 
+  2: { diskCount: 4, pegCount: 3 }, 
 };
 
 function Task2() {
@@ -141,11 +141,9 @@ function Task2() {
   // 🛑 Handle DND button press
   const handleDND = () => {
     localStorage.setItem("dndActiveForThisTask", "true");
-  
-    if (!localStorage.getItem("dndPressedOnce")) {
-      localStorage.setItem("dndPressedOnce", "true");
-    }
-  
+    localStorage.setItem("dndWasPressed", "true");        // ✅ global
+    localStorage.setItem("dndTaskPressed", "Task 2");      // ✅ this task's name
+    
     const event = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(event);
   };
@@ -189,13 +187,13 @@ function Task2() {
       </p>
 
       {/* 🛑 DND BUTTON only if not already activated */}
-      {!localStorage.getItem("dndPressedOnce") && (
-       <button
+       {!localStorage.getItem("dndWasPressed") && (
+        <button
           onClick={handleDND}
           style={{
             position: "fixed",
-            top: "75px",         // ⬅️ Moved down below timer
-            right: "20px",       // ⬅️ Same side as timer (right side)
+            top: "75px",
+            right: "20px",
             backgroundColor: "#ff4d4d",
             color: "white",
             border: "none",
@@ -203,11 +201,11 @@ function Task2() {
             padding: "6px 12px",
             fontWeight: "bold",
             cursor: "pointer",
-            zIndex: 1000,        // ⬅️ Always above everything
+            zIndex: 1000,
           }}
         >
           🛑 Do Not Disturb
-      </button>
+        </button>
       )}
 
       <h2>🗼 Task 2: Tower of Hanoi</h2>

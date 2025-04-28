@@ -110,7 +110,7 @@ function NotificationSystem() {
     const start = localStorage.getItem("experimentStart");
     if (!group || !start) return;
 
-    const groupIntervals = { A: 20, B: 17, C: 5 };
+    const groupIntervals = { A: 20, B: 15, C: 10 };
     const intervalSeconds = groupIntervals[group] || 60;
     let counter = 1;
 

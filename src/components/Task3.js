@@ -115,11 +115,9 @@ const Task3 = () => {
   // 🛑 Handle DND button press
   const handleDND = () => {
     localStorage.setItem("dndActiveForThisTask", "true");
-  
-    if (!localStorage.getItem("dndPressedOnce")) {
-      localStorage.setItem("dndPressedOnce", "true");
-    }
-  
+    localStorage.setItem("dndWasPressed", "true");        // ✅ global
+    localStorage.setItem("dndTaskPressed", "Task 3");      // ✅ this task's name
+    
     const event = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(event);
   };
@@ -163,13 +161,13 @@ const Task3 = () => {
       </p>
 
       {/* 🛑 DND BUTTON only if not already activated */}
-      {!localStorage.getItem("dndPressedOnce") && (
+      {!localStorage.getItem("dndWasPressed") && (
         <button
           onClick={handleDND}
           style={{
             position: "fixed",
-            top: "85px",         // ⬅️ Moved down below timer
-            right: "20px",       // ⬅️ Same side as timer (right side)
+            top: "85px",
+            right: "20px",
             backgroundColor: "#ff4d4d",
             color: "white",
             border: "none",
@@ -177,11 +175,11 @@ const Task3 = () => {
             padding: "6px 12px",
             fontWeight: "bold",
             cursor: "pointer",
-            zIndex: 1000,        // ⬅️ Always above everything
+            zIndex: 1000,
           }}
         >
           🛑 Do Not Disturb
-      </button>
+        </button>
       )}
 
       <h2>🧮 Level {currentLevel}</h2>

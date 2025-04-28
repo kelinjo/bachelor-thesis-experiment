@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Task4.css";
 
 const emojiLevels = [
-  { base: "🌖", odd: "🌕", gridSize: 8 },
+  { base: "🌖", odd: "🌕", gridSize: 8 },/*
   { base: "👩‍💻", odd: "👨‍💻", gridSize: 8 },
   { base: "👨‍✈️", odd: "👩‍✈️", gridSize: 8 },
   { base: "😃", odd: "😄", gridSize: 8 },
@@ -23,7 +23,7 @@ const emojiLevels = [
   { base: "👩‍🔬", odd: "👨‍🔬", gridSize: 10 },
   { base: "😈", odd: "👿", gridSize: 10 },
   { base: "🌑", odd: "🌚", gridSize: 10 },
-  { base: "👨‍🍳", odd: "👩‍🍳", gridSize: 10 },
+  { base: "👨‍🍳", odd: "👩‍🍳", gridSize: 10 },*/
 ];
 
 function Task4() {
@@ -122,11 +122,9 @@ function Task4() {
   // 🛑 Handle DND button press
   const handleDND = () => {
     localStorage.setItem("dndActiveForThisTask", "true");
-  
-    if (!localStorage.getItem("dndPressedOnce")) {
-      localStorage.setItem("dndPressedOnce", "true");
-    }
-  
+    localStorage.setItem("dndWasPressed", "true");        // ✅ global
+    localStorage.setItem("dndTaskPressed", "Task 4");      // ✅ this task's name
+    
     const event = new CustomEvent("taskStatus", { detail: "end" });
     window.dispatchEvent(event);
   };
@@ -165,13 +163,13 @@ function Task4() {
       </p>
 
       {/* 🛑 DND BUTTON if not already activated */}
-      {!localStorage.getItem("dndPressedOnce") && (
+      {!localStorage.getItem("dndWasPressed") && (
         <button
           onClick={handleDND}
           style={{
             position: "fixed",
-            top: "75px",         // ⬅️ Moved down below timer
-            right: "20px",       // ⬅️ Same side as timer (right side)
+            top: "75px",
+            right: "20px",
             backgroundColor: "#ff4d4d",
             color: "white",
             border: "none",
@@ -179,12 +177,11 @@ function Task4() {
             padding: "6px 12px",
             fontWeight: "bold",
             cursor: "pointer",
-            zIndex: 1000,        // ⬅️ Always above everything
+            zIndex: 1000,
           }}
         >
           🛑 Do Not Disturb
-      </button>
-      
+        </button>
       )}
 
       <h2>Level {currentLevel}</h2>

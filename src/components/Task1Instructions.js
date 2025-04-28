@@ -14,7 +14,7 @@ function Task1Instructions() {
 
       <h3>🕹️ How It Works</h3>
       <ul>
-        <li>👀 A grid will appear showing a highlighted pattern for <strong>2 seconds</strong>.</li>
+        <li>👀 A grid will appear showing a highlighted pattern for <strong>2,2 seconds</strong>.</li>
         <li>🧠 Try to memorize the locations of the highlighted cells.</li>
         <li>🎯 After the pattern disappears, click the cells to recreate it.</li>
         <li>🚫 You have a limited number of clicks, including a few errors allowed!</li>

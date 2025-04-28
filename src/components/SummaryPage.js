@@ -27,7 +27,6 @@ function SummaryPage() {
     if (groupValue) setGroup(groupValue);
     if (log) setNotificationLog(JSON.parse(log));
 
-    // 🔥 Detect if DND was pressed and in which task
     if (localStorage.getItem("dndTaskPressed")) {
       setDndPressedTask(localStorage.getItem("dndTaskPressed"));
     }
@@ -99,6 +98,20 @@ function SummaryPage() {
   };
 
   return (
+    <div
+        className="summary-container"
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          minHeight: "100vh", // full page height
+          textAlign: "center", // center the text too
+          padding: "2rem",
+        }}
+      >
+
+
     <div className="summary-container">
       <h1>📋 Experiment Complete!</h1>
       <p>Thank you for participating in the experiment.</p>
@@ -115,10 +128,7 @@ function SummaryPage() {
         <div style={{ marginTop: "2rem" }}>
           <h3>🧠 Task 1: Pattern Matching</h3>
           <p>⏱️ Total Time: <strong>{task1Data.time}</strong></p>
-          <p>
-            🎯 Accuracy: You guessed <strong>{task1Data.correct}</strong> out of{" "}
-            <strong>{task1Data.total}</strong> pattern cells correctly.
-          </p>
+          <p>🎯 Accuracy: You guessed <strong>{task1Data.correct}</strong> out of <strong>{task1Data.total}</strong> pattern cells correctly.</p>
           <p>📊 Final Accuracy: <strong>{task1Data.accuracy}%</strong></p>
         </div>
       )}
@@ -136,10 +146,7 @@ function SummaryPage() {
         <div style={{ marginTop: "2rem" }}>
           <h3>➕ Task 3: Quick Math</h3>
           <p>⏱️ Total Time: <strong>{task3Data.time}</strong></p>
-          <p>
-            🎯 Correct Answers: <strong>{task3Data.correct}</strong> out of{" "}
-            <strong>{task3Data.total}</strong>
-          </p>
+          <p>🎯 Correct Answers: <strong>{task3Data.correct}</strong> out of <strong>{task3Data.total}</strong></p>
           <p>📊 Final Accuracy: <strong>{task3Data.accuracy}%</strong></p>
         </div>
       )}
@@ -162,10 +169,12 @@ function SummaryPage() {
           border: "1px solid #333",
           backgroundColor: "#f5f5f5",
           cursor: "pointer",
+          color: "#333", // 🟰 Darker text color
         }}
       >
         📤 Export Results (CSV)
       </button>
+    </div>
     </div>
   );
 }

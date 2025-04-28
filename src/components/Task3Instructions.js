@@ -14,7 +14,7 @@ function Task3Instructions() {
 
       <h3>🧠 What to Expect</h3>
       <ul>
-        <li>🧮 20 multiple-choice questions</li>
+        <li>🧮 30 multiple-choice questions</li>
         <li>🔢 Topics include: addition, subtraction, multiplication, division, square roots, and simple equations</li>
         <li>🧗‍♂️ Difficulty increases as you progress</li>
       </ul>
@@ -30,11 +30,11 @@ function Task3Instructions() {
       <ul>
         <li>⏱️ How long you take to complete the full task</li>
         <li>✅ How many correct answers you get</li>
-        <li>📉 Accuracy and speed across all 30 questions</li>
+        <li>📉 Speed across all 30 questions</li>
       </ul>
 
       <p>
-        Try to be both <strong>fast</strong> and <strong>accurate</strong> — your performance matters!
+        Try to be <strong>fast</strong> — your performance matters!
       </p>
 
       <button onClick={() => navigate("/task3")}>Start Task</button>
