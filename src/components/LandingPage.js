@@ -31,7 +31,7 @@ function LandingPage() {
 
           <p>
             Throughout the experiment, you'll receive notifications at different intervals depending on the group you’re assigned to.
-            These notifications may include distractions—or even helpful hints—but you won’t know which until you engage (click) with them.
+            These notifications may include distractions—or even helpful hints—but you won’t know which until you engage (click) with them, they are expandable.
             The notifications will dissapear after <strong>6 seconds</strong> seconds of no interaction, so keep that in mind when interacting with hints.
           </p>
 
@@ -49,8 +49,9 @@ function LandingPage() {
           </p>
 
           <p className="warning">
-            ⚠️ <strong>Once you choose your group below, the global experiment timer will begin.</strong><br />
+            ⚠️ <strong>Once you choose your group below, the global experiment timer will begin. Pressing the "back" button at any point of the experiment is forbidden so read the task instructions carefully!</strong><br />
             Make sure you're ready, focused and free from interruptions, also keep the volume at least 50%.
+            🎧 For best results, please complete the experiment without headphones. Some sound cues may be delayed or muted when using them.
         </p>
 
         <div className="button-group" style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "center", marginTop: "1rem" }}>

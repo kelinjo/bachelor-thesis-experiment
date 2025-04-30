@@ -174,7 +174,25 @@ function SummaryPage() {
       >
         📤 Export Results (CSV)
       </button>
+
     </div>
+    <a
+          href="https://drive.google.com/drive/folders/1XQwK6ccIg4PabTrq53_VTohCi-o5qPwc?usp=sharing"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-block",
+            marginTop: "1rem",
+            padding: "10px 20px",
+            backgroundColor: "#4caf50",
+            color: "white",
+            borderRadius: "8px",
+            textDecoration: "none",
+            fontWeight: "bold",
+          }}
+        >
+          📨 Submit Your Results Anonymously
+      </a>
     </div>
   );
 }

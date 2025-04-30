@@ -69,9 +69,9 @@ const task1Hints = {
 
 
 const task3Hints = {
-  5: "🧮 Hint: The answer is 10.",
-  12: "💡 Hint: The answer is 11.",
-  20: "🧠 Hint: The answer is 6.",
+  2: "🧮 Hint: The answer is 7.",
+  15: "💡 Hint: The answer is 13.",
+  30: "🧠 Hint: The answer is 8.",
 };
 
 const popSound = new Audio("/notification_audio.mp3");

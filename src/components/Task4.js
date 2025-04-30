@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "../styles/Task4.css";
 
 const emojiLevels = [
-  { base: "🌖", odd: "🌕", gridSize: 8 },/*
+  { base: "🌖", odd: "🌕", gridSize: 8 },
   { base: "👩‍💻", odd: "👨‍💻", gridSize: 8 },
   { base: "👨‍✈️", odd: "👩‍✈️", gridSize: 8 },
   { base: "😃", odd: "😄", gridSize: 8 },
@@ -23,7 +23,7 @@ const emojiLevels = [
   { base: "👩‍🔬", odd: "👨‍🔬", gridSize: 10 },
   { base: "😈", odd: "👿", gridSize: 10 },
   { base: "🌑", odd: "🌚", gridSize: 10 },
-  { base: "👨‍🍳", odd: "👩‍🍳", gridSize: 10 },*/
+  { base: "👨‍🍳", odd: "👩‍🍳", gridSize: 10 }, 
 ];
 
 function Task4() {

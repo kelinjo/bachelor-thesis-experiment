@@ -68,7 +68,7 @@ const Task3 = () => {
   
 
   useEffect(() => {
-    const hintLevels = [5, 12, 20];
+    const hintLevels = [2, 15, 30];
     if (hintLevels.includes(currentLevel)) {
       const event = new CustomEvent("triggerHint", { detail: currentLevel });
       window.dispatchEvent(event);
