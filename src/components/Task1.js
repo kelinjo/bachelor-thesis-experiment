@@ -8,7 +8,7 @@ const levelPatterns = {
   1: { pattern: [[0, 1], [1, 2], [2, 1], [3, 3]], gridSize: 4, allowedErrors: 1 },
   2: { pattern: [[0, 1], [1, 3], [3, 1], [4, 2], [4, 0]], gridSize: 5, allowedErrors: 1 }, 
   3: { pattern: [[0, 0], [0, 4], [2, 2], [4, 0], [4, 4], [1, 3]], gridSize: 5, allowedErrors: 1 },
-  4: { pattern: [[0, 0], [0, 4], [1, 2], [2, 1], [3, 3], [4, 0], [4, 4]], gridSize: 5, allowedErrors: 1 },
+  4: { pattern: [[0, 0], [0, 4], [1, 2], [2, 1], [3, 3], [4, 0], [4, 4]], gridSize: 5, allowedErrors: 1 }, 
   5: { pattern: [[0, 1], [1, 2], [2, 1], [3, 3], [4, 0], [4, 2], [4, 4], [3, 2]], gridSize: 5, allowedErrors: 1 },
   6: { pattern: [[0, 1], [1, 3], [2, 2], [3, 0], [3, 4], [4, 2], [4, 3]], gridSize: 6, allowedErrors: 1 },
   7: { pattern: [[0, 0], [0, 4], [1, 1], [2, 3], [3, 1], [3, 4], [4, 0], [4, 5]], gridSize: 6, allowedErrors: 2 },

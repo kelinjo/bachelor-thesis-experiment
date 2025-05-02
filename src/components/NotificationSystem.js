@@ -21,7 +21,6 @@ const distractionMessages = [
   "⏳ Time’s ticking... but don't rush.",
 ];
 
-
 const expandMessages = [
   "Still here? Maybe this one didn’t help. Try focusing on the next pattern.",
   "Hmm... was that worth checking? Stay sharp.",
@@ -37,10 +36,8 @@ const expandMessages = [
   "Small moments of focus build big results. Stay sharp!",
 ];
 
-
 const task1Hints = {
   3: "🔍 Hint: Pick all the corners.",
-
   10: `
     🧠 Hint: Here's a visual clue for Level 10:
     0 0 x 0 0 0
@@ -51,9 +48,8 @@ const task1Hints = {
     0 0 x 0 0 x
 
     (🖼️ 'x' shows some important pattern cells!)
-      `.trim(),
-
-      16: `
+  `.trim(),
+  16: `
     👁️ Hint: Here's a visual clue for Level 16:
     0 x 0 0 x 0 0
     0 0 x 0 0 x 0
@@ -64,17 +60,14 @@ const task1Hints = {
     0 x 0 0 x 0 x
 
     (👀 Focus on where 'x' appears!)
-      `.trim(),
+  `.trim(),
 };
-
 
 const task3Hints = {
   2: "🧮 Hint: The answer is 7.",
   15: "💡 Hint: The answer is 13.",
   30: "🧠 Hint: The answer is 8.",
 };
-
-const popSound = new Audio("/notification_audio.mp3");
 
 function NotificationSystem() {
   const [visibleNotifications, setVisibleNotifications] = useState([]);
@@ -83,6 +76,14 @@ function NotificationSystem() {
   const expandedContentRef = useRef({});
   const location = useLocation();
   const [taskActive, setTaskActive] = useState(true);
+  const popSoundRef = useRef(null); // ✅ useRef for audio
+
+  // ✅ Initialize audio once
+  useEffect(() => {
+    popSoundRef.current = new Audio("/notification_audio.mp3");
+    popSoundRef.current.preload = "auto";
+    popSoundRef.current.volume = 1.0;
+  }, []);
 
   const startAutoDismissTimer = (id, duration = 6000) => {
     if (timersRef.current[id]) clearTimeout(timersRef.current[id]);
@@ -118,7 +119,7 @@ function NotificationSystem() {
       if (!taskActive) return;
       if (location.pathname === "/summary") return;
       if (location.pathname.includes("instructions")) return;
-      if (localStorage.getItem("dndActiveForThisTask") === "true") return; // 🛑 Block if DND active for this task
+      if (localStorage.getItem("dndActiveForThisTask") === "true") return;
 
       const baseMessage = distractionMessages[Math.floor(Math.random() * distractionMessages.length)];
       const expandMessage = expandMessages[Math.floor(Math.random() * expandMessages.length)];
@@ -142,8 +143,11 @@ function NotificationSystem() {
       logNotification(newNotification);
       startAutoDismissTimer(newNotification.id);
 
-      popSound.currentTime = 0;
-      popSound.play();
+      // ✅ Optimized sound playback
+      if (popSoundRef.current) {
+        popSoundRef.current.currentTime = 0;
+        popSoundRef.current.play().catch(() => {});
+      }
 
       counter++;
     };
@@ -154,7 +158,7 @@ function NotificationSystem() {
 
   useEffect(() => {
     const handleHintTrigger = (e) => {
-      if (localStorage.getItem("dndActiveForThisTask") === "true") return; // 🛑 Block hint notifications too
+      if (localStorage.getItem("dndActiveForThisTask") === "true") return;
       const level = e.detail;
       let hintText = null;
 
@@ -186,8 +190,11 @@ function NotificationSystem() {
       logNotification(hintNotification);
       startAutoDismissTimer(hintNotification.id);
 
-      popSound.currentTime = 0;
-      popSound.play();
+      // ✅ Optimized sound playback
+      if (popSoundRef.current) {
+        popSoundRef.current.currentTime = 0;
+        popSoundRef.current.play().catch(() => {});
+      }
     };
 
     window.addEventListener("triggerHint", handleHintTrigger);

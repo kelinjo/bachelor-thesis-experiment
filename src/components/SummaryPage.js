@@ -90,8 +90,9 @@ function SummaryPage() {
     const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
     link.setAttribute("href", url);
-    link.setAttribute("download", "experiment_results.csv");
+    link.setAttribute("download", `experiment_results_${timestamp}.csv`);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
