@@ -5,12 +5,11 @@ import "../styles/Task4.css";
 
 const emojiLevels = [
   { base: "🌖", odd: "🌕", gridSize: 8 },
-  { base: "👩‍💻", odd: "👨‍💻", gridSize: 8 },
   { base: "👨‍✈️", odd: "👩‍✈️", gridSize: 8 },
   { base: "😃", odd: "😄", gridSize: 8 },
   { base: "🙂", odd: "🙃", gridSize: 8 },
   { base: "👨‍⚖️", odd: "👩‍⚖️", gridSize: 8 },
-  { base: "👨‍🎤", odd: "👩‍🎤", gridSize: 9 },
+  { base: "👨‍🎤", odd: "👩‍🎤", gridSize: 8 },
   { base: "👩‍🔧", odd: "👨‍🔧", gridSize: 9 },
   { base: "😐", odd: "😶", gridSize: 9 },
   { base: "👨‍🦱", odd: "👩‍🦱", gridSize: 9 },
@@ -20,9 +19,10 @@ const emojiLevels = [
   { base: "😺", odd: "😸", gridSize: 10 },
   { base: "👨‍🏫", odd: "👩‍🏫", gridSize: 10 },
   { base: "👨‍🎓", odd: "👩‍🎓", gridSize: 10 },
+  { base: "🌑", odd: "🌚", gridSize: 10 },
   { base: "👩‍🔬", odd: "👨‍🔬", gridSize: 10 },
   { base: "😈", odd: "👿", gridSize: 10 },
-  { base: "🌑", odd: "🌚", gridSize: 10 },
+  { base: "👩‍💻", odd: "👨‍💻", gridSize: 10 },
   { base: "👨‍🍳", odd: "👩‍🍳", gridSize: 10 }, 
 ];
 

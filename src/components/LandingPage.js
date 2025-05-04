@@ -5,6 +5,22 @@ function LandingPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 🧹 Full reset on landing page
+    localStorage.removeItem("experimentStart");
+    localStorage.removeItem("group");
+    localStorage.removeItem("notificationLog");
+    localStorage.removeItem("dndTaskPressed");
+    localStorage.removeItem("dndWasPressed"); 
+    localStorage.removeItem("dndActiveForThisTask");
+    localStorage.removeItem("task1Results");
+    localStorage.removeItem("task2Results");
+    localStorage.removeItem("task3Results");
+    localStorage.removeItem("task4Results");
+    localStorage.removeItem("currentLevel"); 
+  }, []);
+  
+
+  useEffect(() => {
     // ✅ Reset the timer on landing
     localStorage.removeItem("experimentStart");
   }, []);
@@ -31,8 +47,9 @@ function LandingPage() {
 
           <p>
             Throughout the experiment, you'll receive notifications at different intervals depending on the group you’re assigned to.
-            These notifications may include distractions—or even helpful hints—but you won’t know which until you engage (click) with them, they are expandable.
-            The notifications will dissapear after <strong>6 seconds</strong> seconds of no interaction, so keep that in mind when interacting with hints.
+            These notifications may include <strong>distractions</strong> or even <strong>helpful hints</strong> but you won’t know which until you engage with them. What that means is that 
+            when you click the notification they expand an show a <strong>hidden message</strong>.
+            The notifications will <strong>dissapear</strong> after <strong>6 seconds</strong> seconds of <strong>no interaction</strong>, so keep that in mind when interacting with hints.
           </p>
 
           <p>
@@ -49,10 +66,15 @@ function LandingPage() {
           </p>
 
           <p className="warning">
-            ⚠️ <strong>Once you choose your group below, the global experiment timer will begin. Pressing the "back" button at any point of the experiment is forbidden so read the task instructions carefully!</strong><br />
-            Make sure you're ready, focused and free from interruptions, also keep the volume at least 50%.
-            🎧 For best results, please complete the experiment without headphones. Some sound cues may be delayed or muted when using them.
-        </p>
+            ⚠️<strong>
+              Once you choose your group below, the global experiment timer will begin. Going back (pressing the back button on the browser) at any point of the experiment is forbidden so read the task instructions carefully!!!
+            </strong>
+            <br />
+              Make sure you're ready, focused and free from interruptions.
+            <br />
+              🎧 For best results, please complete the experiment with headphones, also keep the volume at least 50%, preferably a bit higher.
+          </p>
+
 
         <div className="button-group" style={{ display: "flex", flexDirection: "column", gap: "5px", alignItems: "center", marginTop: "1rem" }}>
   <button

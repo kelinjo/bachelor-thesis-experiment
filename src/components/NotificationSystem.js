@@ -76,11 +76,11 @@ function NotificationSystem() {
   const expandedContentRef = useRef({});
   const location = useLocation();
   const [taskActive, setTaskActive] = useState(true);
-  const popSoundRef = useRef(null); // ✅ useRef for audio
+  const popSoundRef = useRef(null); 
 
   // ✅ Initialize audio once
   useEffect(() => {
-    popSoundRef.current = new Audio("/notification_audio.mp3");
+    popSoundRef.current = new Audio("/new_audio.mp3");
     popSoundRef.current.preload = "auto";
     popSoundRef.current.volume = 1.0;
   }, []);
@@ -111,7 +111,7 @@ function NotificationSystem() {
     const start = localStorage.getItem("experimentStart");
     if (!group || !start) return;
 
-    const groupIntervals = { A: 20, B: 15, C: 10 };
+    const groupIntervals = { A: 30, B: 20, C: 15 };
     const intervalSeconds = groupIntervals[group] || 60;
     let counter = 1;
 
@@ -143,7 +143,7 @@ function NotificationSystem() {
       logNotification(newNotification);
       startAutoDismissTimer(newNotification.id);
 
-      // ✅ Optimized sound playback
+      
       if (popSoundRef.current) {
         popSoundRef.current.currentTime = 0;
         popSoundRef.current.play().catch(() => {});
