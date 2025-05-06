@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/bachelor-thesis-experiment/static/css/main.31bac94d.css",
-    "main.js": "/bachelor-thesis-experiment/static/js/main.88af4cba.js",
+    "main.js": "/bachelor-thesis-experiment/static/js/main.7d19db30.js",
     "index.html": "/bachelor-thesis-experiment/index.html",
     "main.31bac94d.css.map": "/bachelor-thesis-experiment/static/css/main.31bac94d.css.map",
-    "main.88af4cba.js.map": "/bachelor-thesis-experiment/static/js/main.88af4cba.js.map"
+    "main.7d19db30.js.map": "/bachelor-thesis-experiment/static/js/main.7d19db30.js.map"
   },
   "entrypoints": [
     "static/css/main.31bac94d.css",
-    "static/js/main.88af4cba.js"
+    "static/js/main.7d19db30.js"
   ]
 }
